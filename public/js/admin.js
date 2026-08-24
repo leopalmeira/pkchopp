@@ -390,10 +390,18 @@ function renderProductsTable() {
     return `
       <tr>
         <td>
-          <div style="font-weight: 800; color: #fff; font-size: 0.95rem;">
-            <i class="fa-solid fa-beer-mug-empty" style="color:#f59e0b; margin-right:0.4rem;"></i>
-            ${prod.description || prod.name}
-            ${protectedBadge}
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <img src="${prod.image || '/images/barril-brahma.jpg'}" alt="${prod.name}" style="width:42px; height:42px; object-fit:contain; background:#0B1120; border-radius:4px; padding:2px; border:1px solid var(--erp-border-light);" onerror="this.src='/images/barril-brahma.jpg'">
+            <div>
+              <div style="font-weight: 800; color: #fff; font-size: 0.92rem;">
+                ${prod.name}
+                <span style="font-size:0.72rem; color:#f59e0b; font-weight:700; margin-left:0.35rem;">(${prod.liters || 50}L)</span>
+                ${protectedBadge}
+              </div>
+              <div style="font-size:0.75rem; color:var(--text-muted); max-width:320px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                ${prod.description || 'Sem descrição'}
+              </div>
+            </div>
           </div>
         </td>
         <td>
@@ -431,15 +439,21 @@ window.openProductModal = function(product = null) {
   if (product) {
     if (title) title.innerHTML = '<i class="fa-solid fa-pen-to-square" style="color:#38BDF8;"></i> Editar Produto';
     document.getElementById('editProductId').value = product.id;
-    document.getElementById('prodDescription').value = product.description || product.name || '';
+    document.getElementById('prodName').value = product.name || '';
+    document.getElementById('prodDescription').value = product.description || '';
+    document.getElementById('prodLiters').value = product.liters || 50;
     document.getElementById('prodPrice').value = product.price || '';
     document.getElementById('prodStock').value = (product.stock !== undefined && product.stock !== null) ? product.stock : 50;
-    // Mostrar botão Excluir apenas se NÃO for protegido
+    document.getElementById('prodImage').value = product.image || '/images/barril-brahma.jpg';
     if (btnDelete) btnDelete.style.display = product.protected ? 'none' : 'inline-flex';
   } else {
     if (title) title.innerHTML = '<i class="fa-solid fa-cube" style="color:#38BDF8;"></i> Cadastrar Produto';
     document.getElementById('editProductId').value = '';
+    document.getElementById('prodName').value = 'Barril de Chopp 50 Litros';
+    document.getElementById('prodDescription').value = '';
+    document.getElementById('prodLiters').value = '50';
     document.getElementById('prodStock').value = '50';
+    document.getElementById('prodImage').value = '/images/barril-brahma.jpg';
     if (btnDelete) btnDelete.style.display = 'none';
   }
 
@@ -494,19 +508,24 @@ window.deleteProduct = async function(id) {
 async function handleSaveProduct(e) {
   e.preventDefault();
   const id = document.getElementById('editProductId').value;
+  const name = document.getElementById('prodName').value.trim() || 'Barril de Chopp 50 Litros';
   const description = document.getElementById('prodDescription').value.trim();
+  const liters = parseInt(document.getElementById('prodLiters').value, 10) || 50;
   const price = parseFloat(document.getElementById('prodPrice').value);
   const stock = parseInt(document.getElementById('prodStock').value, 10) || 0;
+  const image = document.getElementById('prodImage').value.trim() || '/images/barril-brahma.jpg';
 
   const payload = {
-    name: description,
+    name: name,
     description: description,
+    liters: liters,
     price: price,
     stock: stock,
-    unit: description.includes('50') ? 'Barril 50L' : (description.includes('30') ? 'Barril 30L' : 'Barril'),
+    unit: `Barril ${liters}L`,
     category: 'chopp',
-    image: 'https://images.unsplash.com/photo-1538488881522-4326c36763ce?auto=format&fit=crop&w=600&q=80',
-    active: true
+    image: image,
+    active: true,
+    tags: [`${liters} Litros`, "Pronta Entrega"]
   };
 
   try {

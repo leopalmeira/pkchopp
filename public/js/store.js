@@ -143,15 +143,13 @@ function renderProducts(searchTerm = '') {
   let filtered = productsState.filter(p => p.active !== false);
 
   if (currentCategory === '50l') {
-    filtered = filtered.filter(p => p.liters === 50);
-  } else if (currentCategory === '30l') {
-    filtered = filtered.filter(p => p.liters === 30);
+    filtered = filtered.filter(p => p.liters === 50 || (p.unit && p.unit.includes('50')));
   }
 
   if (searchTerm) {
     filtered = filtered.filter(p => 
       p.name.toLowerCase().includes(searchTerm) || 
-      p.description.toLowerCase().includes(searchTerm) ||
+      (p.description && p.description.toLowerCase().includes(searchTerm)) ||
       (p.tags && p.tags.some(t => t.toLowerCase().includes(searchTerm)))
     );
   }
@@ -171,25 +169,23 @@ function renderProducts(searchTerm = '') {
     const price = prod.promotionalPrice !== null && prod.promotionalPrice !== undefined ? prod.promotionalPrice : prod.price;
     const hasDiscount = prod.promotionalPrice && prod.promotionalPrice < prod.price;
     
-    const litersBadge = prod.liters > 0 ? `<span class="tag-chip liters"><i class="fa-solid fa-beer-mug-empty"></i> ${prod.liters} Litros</span>` : '';
-    const yieldBadge = prod.liters === 50 ? `<span class="tag-chip"><i class="fa-solid fa-calculator"></i> Rende ~165 copos (300ml)</span>` : (prod.liters === 30 ? `<span class="tag-chip"><i class="fa-solid fa-calculator"></i> Rende ~100 copos (300ml)</span>` : '');
+    const litersBadge = prod.liters > 0 ? `<span class="tag-chip liters"><i class="fa-solid fa-beer-mug-empty"></i> ${prod.liters} Litros</span>` : '<span class="tag-chip liters"><i class="fa-solid fa-beer-mug-empty"></i> 50 Litros</span>';
 
     return `
       <div class="product-card">
         <div class="card-img-wrap">
           <span class="badge-atacado"><i class="fa-solid fa-truck-ramp-box"></i> Direto da Fábrica</span>
-          <img src="${prod.image}" alt="${prod.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1538488881522-4326c36763ce?auto=format&fit=crop&w=600&q=80'">
+          <img src="${prod.image || '/images/barril-brahma.jpg'}" alt="${prod.name}" loading="lazy" onerror="this.src='/images/barril-brahma.jpg'">
         </div>
         <div class="card-body">
           <div class="tags-row">
             ${litersBadge}
-            ${yieldBadge}
             <span class="tag-chip"><i class="fa-solid fa-bolt"></i> Válvula S</span>
             ${(prod.tags || []).filter(t => !t.includes('Litros')).map(tag => `<span class="tag-chip">${tag}</span>`).join('')}
           </div>
           
           <h3 class="card-title">${prod.name}</h3>
-          <p class="card-desc">${prod.description}</p>
+          <p class="card-desc">${prod.description || ''}</p>
           
           <div class="card-pricing-box">
             <div>
@@ -197,7 +193,7 @@ function renderProducts(searchTerm = '') {
               <div class="price-main">R$ ${price.toFixed(2).replace('.', ',')}</div>
             </div>
             <div style="text-align:right;">
-              <span style="font-size:0.78rem; color:var(--text-slate-300); font-weight:700;">${prod.unit}</span>
+              <span style="font-size:0.78rem; color:var(--text-slate-300); font-weight:700;">${prod.unit || 'Barril 50L'}</span>
               ${hasDiscount ? `<div style="font-size:0.8rem; color:var(--text-slate-500); text-decoration:line-through;">R$ ${prod.price.toFixed(2).replace('.', ',')}</div>` : ''}
             </div>
           </div>
