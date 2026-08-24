@@ -209,7 +209,7 @@ function renderProducts(searchTerm = '') {
             </div>
 
             <h2 class="product-title">${prod.name}</h2>
-            <p class="product-description-text">${prod.description || 'Barril de Chopp de alta qualidade, devidamente pressurizado e lacrado com válvula padrão universal Tipo S para abastecimento do seu estabelecimento.'}</p>
+            <p class="product-description-text">${prod.description || 'Chopp Brahma é uma bebida leve e não pasteurizada, do estilo American Lager, com teor alcoólico de 4,8%. Ele destaca-se pelo frescor, coloração amarelo-palha, colarinho denso e cremoso, além de notas suaves de malte e lúpulo no paladar'}</p>
           </div>
 
           <div>

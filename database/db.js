@@ -35,9 +35,9 @@ function writeJSON(filename, data) {
 const DEFAULT_PRODUCTS = [
   {
     id: "prod-brahma-50",
-    name: "Barril de Chopp 50 Litros",
+    name: "Chopp Brahma 50L - Barril Inox",
     category: "chopp",
-    description: "Barril de Chopp 50 Litros. Produto de alta qualidade para abastecimento de bares, restaurantes e eventos.",
+    description: "Chopp Brahma é uma bebida leve e não pasteurizada, do estilo American Lager, com teor alcoólico de 4,8%. Ele destaca-se pelo frescor, coloração amarelo-palha, colarinho denso e cremoso, além de notas suaves de malte e lúpulo no paladar",
     liters: 50,
     unit: "Barril 50L",
     price: 479.00,
