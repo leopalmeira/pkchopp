@@ -67,6 +67,24 @@ function setupEventListeners() {
     });
   }
 
+  // Máscara de Telefone / WhatsApp Comercial
+  const phoneInput = document.getElementById('customerPhone');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', (e) => {
+      let v = e.target.value.replace(/\D/g, '');
+      if (v.length > 11) v = v.substring(0, 11);
+      if (v.length > 6) {
+        e.target.value = `(${v.substring(0, 2)}) ${v.substring(2, 7)}-${v.substring(7)}`;
+      } else if (v.length > 2) {
+        e.target.value = `(${v.substring(0, 2)}) ${v.substring(2)}`;
+      } else if (v.length > 0) {
+        e.target.value = `(${v}`;
+      } else {
+        e.target.value = '';
+      }
+    });
+  }
+
   // Abertura do Checkout
   if (btnOpenCheckoutModal) {
     btnOpenCheckoutModal.addEventListener('click', () => {
@@ -289,21 +307,23 @@ function updateCartUI() {
       subtotal += itemTotal;
 
       return `
-        <div class="cart-item-row">
-          <img src="${item.image}" class="cart-item-img" alt="${item.name}">
-          <div class="cart-item-info">
+        <div class="cart-item-card">
+          <img src="${item.image || '/images/barril-brahma.jpg'}" class="cart-item-img" alt="${item.name}" onerror="this.src='/images/barril-brahma.jpg'">
+          <div class="cart-item-details">
             <div class="cart-item-title">${item.name}</div>
-            <div class="cart-item-unit">${item.unit}</div>
-            <div class="cart-item-price">R$ ${item.price.toFixed(2).replace('.', ',')} x ${item.quantity} = R$ ${itemTotal.toFixed(2).replace('.', ',')}</div>
+            <div class="cart-item-unit">${item.unit || 'Barril 50L'}</div>
+            <div class="cart-item-bottom">
+              <span style="font-weight:900; color:#fff; font-size:0.92rem;">R$ ${itemTotal.toFixed(2).replace('.', ',')}</span>
+              <div class="qty-control-bees" style="transform: scale(0.85); transform-origin: right center;">
+                <button type="button" class="qty-btn" onclick="updateCartItemQty(${index}, -1)">-</button>
+                <input type="text" class="qty-input" value="${item.quantity}" readonly>
+                <button type="button" class="qty-btn" onclick="updateCartItemQty(${index}, 1)">+</button>
+              </div>
+              <button class="btn-remove-item" onclick="removeCartItem(${index})" title="Remover barril">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
           </div>
-          <div class="qty-control-bees" style="transform: scale(0.85);">
-            <button type="button" class="qty-btn" onclick="updateCartItemQty(${index}, -1)">-</button>
-            <input type="text" class="qty-input" value="${item.quantity}" readonly>
-            <button type="button" class="qty-btn" onclick="updateCartItemQty(${index}, 1)">+</button>
-          </div>
-          <button class="cart-item-remove" onclick="removeCartItem(${index})" title="Remover item">
-            <i class="fa-solid fa-trash-can"></i>
-          </button>
         </div>
       `;
     }).join('');
@@ -416,7 +436,7 @@ async function handleOrderSubmit(e) {
   } finally {
     if (submitBtn) {
       submitBtn.disabled = false;
-      submitBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Confirmar e Gravar Pedido de Barris';
+      submitBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Confirmar e Enviar Pedido';
     }
   }
 }
