@@ -15,7 +15,7 @@ Sistema completo para operação e gestão de delivery de Chopp artesanal, integ
 ## 🚀 Funcionalidades
 
 ### 🛒 Loja & Atendimento Express (`public/index.html`)
-- Catálogo de barris de chopp 50L com foto real e preço direto de fábrica.
+- Catálogo de barris de chopp 50L com foto real e preços competitivos de atacado.
 - Carrinho de compras em tempo real.
 - Agendamento e cálculo de entrega.
 - Integração de pagamento via PIX (QR Code & Copia e Cola) e no ato da entrega.

@@ -192,7 +192,7 @@ function renderProducts(searchTerm = '') {
     return `
       <div class="product-card">
         <div class="card-img-wrap">
-          <span class="badge-atacado"><i class="fa-solid fa-truck-ramp-box"></i> Direto da Fábrica</span>
+          <span class="badge-atacado"><i class="fa-solid fa-truck-fast"></i> Pronta Entrega RJ</span>
           <img src="${prod.image || '/images/barril-brahma.jpg'}" alt="${prod.name}" loading="lazy" onerror="this.src='/images/barril-brahma.jpg'">
         </div>
         <div class="card-body">
