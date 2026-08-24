@@ -18,9 +18,29 @@ app.use(express.urlencoded({ extended: true }));
 // Servir arquivos estáticos (Frontend da Loja e Painel Admin)
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Senha de Acesso do Administrador
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Lps27031981';
+
 // Rotas de Páginas
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+// Autenticação do Painel Admin
+app.post('/api/auth/login', (req, res) => {
+  const { password } = req.body;
+  if (password === ADMIN_PASSWORD) {
+    return res.json({ success: true, token: 'pkchopp-auth-session-valid' });
+  }
+  return res.status(401).json({ success: false, message: 'Senha incorreta! Verifique e tente novamente.' });
+});
+
+app.post('/api/auth/verify', (req, res) => {
+  const { token } = req.body;
+  if (token === 'pkchopp-auth-session-valid') {
+    return res.json({ success: true, authenticated: true });
+  }
+  return res.status(401).json({ success: false, authenticated: false });
 });
 
 // ==========================================

@@ -19,6 +19,38 @@
 </head>
 <body>
 
+  <!-- TELA DE BLOQUEIO / AUTENTICAÇÃO DO PAINEL ADMIN -->
+  <div id="adminAuthOverlay" style="position: fixed; inset: 0; background: #070B14; z-index: 99999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px);">
+    <div style="background: #0F172A; border: 1px solid rgba(255, 255, 255, 0.12); padding: 2.5rem; border-radius: 16px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);">
+      <div style="width: 64px; height: 64px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; color: #38BDF8; font-size: 1.6rem;">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <h2 style="color: #fff; font-size: 1.35rem; font-weight: 900; margin-bottom: 0.35rem;">Acesso Restrito</h2>
+      <p style="color: #94A3B8; font-size: 0.85rem; margin-bottom: 1.5rem;">Painel Administrativo PKCHOPP</p>
+      
+      <form id="adminAuthForm" onsubmit="handleAdminLogin(event)">
+        <div style="margin-bottom: 1.25rem; text-align: left;">
+          <label style="font-size: 0.8rem; font-weight: 700; color: #E2E8F0; display: block; margin-bottom: 0.4rem;">Senha do Administrador</label>
+          <div style="position: relative;">
+            <input type="password" id="adminPasswordInput" required placeholder="Digite a senha..." style="width: 100%; background: #020617; border: 1px solid rgba(255, 255, 255, 0.18); padding: 0.75rem 2.5rem 0.75rem 1rem; border-radius: 8px; color: #fff; font-size: 0.95rem; outline: none; box-sizing: border-box;">
+            <button type="button" onclick="togglePasswordVisibility()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94A3B8; cursor: pointer; font-size: 1rem;">
+              <i id="passwordToggleIcon" class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+          <div id="authErrorMessage" style="color: #EF4444; font-size: 0.8rem; margin-top: 0.5rem; display: none; font-weight: 700;">
+            <i class="fa-solid fa-circle-exclamation"></i> Senha incorreta. Tente novamente.
+          </div>
+        </div>
+        <button type="submit" id="btnAdminLogin" style="width: 100%; background: linear-gradient(135deg, #0284C7, #0369A1); color: #fff; border: none; padding: 0.85rem; border-radius: 8px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.2s;">
+          <i class="fa-solid fa-lock-open"></i> Desbloquear Painel
+        </button>
+      </form>
+      <div style="margin-top: 1.5rem; font-size: 0.75rem; color: #64748B;">
+        🔒 Autenticação de Acesso Seguro
+      </div>
+    </div>
+  </div>
+
   <!-- Menu Lateral de Navegação TOTVS ERP -->
   <aside class="sidebar">
     <div class="sidebar-header">
@@ -78,8 +110,11 @@
     <div class="sidebar-footer">
       <a href="/" target="_blank" class="btn-open-store">
         <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        <span>Acessar Portal do Lojista (Sem Login)</span>
+        <span>Acessar Loja (Cliente)</span>
       </a>
+      <button type="button" onclick="handleAdminLogout()" style="margin-top: 0.5rem; width: 100%; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); color: #EF4444; padding: 0.55rem; border-radius: var(--radius-xs); font-size: 0.78rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem;">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair / Bloquear
+      </button>
     </div>
   </aside>
 

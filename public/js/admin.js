@@ -7,7 +7,83 @@ let allClients = [];
 let appSettings = {};
 let selectedClientForQuickOrder = null;
 
+// ==========================================
+// AUTENTICAÇÃO DO PAINEL ADMIN COM SENHA
+// ==========================================
+window.checkAdminAuth = function() {
+  const token = sessionStorage.getItem('pkchopp_auth_token');
+  const overlay = document.getElementById('adminAuthOverlay');
+  if (token === 'pkchopp-auth-session-valid') {
+    if (overlay) overlay.style.display = 'none';
+    return true;
+  } else {
+    if (overlay) overlay.style.display = 'flex';
+    return false;
+  }
+};
+
+window.handleAdminLogin = async function(e) {
+  e.preventDefault();
+  const password = document.getElementById('adminPasswordInput').value;
+  const errorMsg = document.getElementById('authErrorMessage');
+  const btn = document.getElementById('btnAdminLogin');
+
+  if (errorMsg) errorMsg.style.display = 'none';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Verificando...';
+  }
+
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password })
+    });
+    const data = await res.json();
+
+    if (data.success && data.token) {
+      sessionStorage.setItem('pkchopp_auth_token', data.token);
+      const overlay = document.getElementById('adminAuthOverlay');
+      if (overlay) overlay.style.display = 'none';
+      loadAllAdminData();
+    } else {
+      if (errorMsg) errorMsg.style.display = 'block';
+    }
+  } catch (err) {
+    console.error('Erro na autenticação:', err);
+    if (errorMsg) errorMsg.style.display = 'block';
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> Desbloquear Painel';
+    }
+  }
+};
+
+window.handleAdminLogout = function() {
+  sessionStorage.removeItem('pkchopp_auth_token');
+  const overlay = document.getElementById('adminAuthOverlay');
+  const input = document.getElementById('adminPasswordInput');
+  if (input) input.value = '';
+  if (overlay) overlay.style.display = 'flex';
+};
+
+window.togglePasswordVisibility = function() {
+  const input = document.getElementById('adminPasswordInput');
+  const icon = document.getElementById('passwordToggleIcon');
+  if (!input) return;
+  if (input.type === 'password') {
+    input.type = 'text';
+    if (icon) icon.className = 'fa-solid fa-eye-slash';
+  } else {
+    input.type = 'password';
+    if (icon) icon.className = 'fa-solid fa-eye';
+  }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
+  checkAdminAuth();
   setupNavigation();
   setupEventListeners();
   loadAllAdminData();

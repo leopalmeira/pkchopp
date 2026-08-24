@@ -4,30 +4,40 @@ Sistema completo para operação e gestão de delivery de Chopp artesanal, integ
 
 ---
 
+## 🌐 Links do Projeto no Ar
+
+- 🛒 **Página de Vendas / Loja do Cliente:** [https://pkchopp.onrender.com](https://pkchopp.onrender.com)
+- 🛡️ **Painel Administrativo & Radar:** [https://pkchopp.onrender.com/admin](https://pkchopp.onrender.com/admin)
+  - 🔑 **Senha de Acesso:** `Lps27031981`
+
+---
+
 ## 🚀 Funcionalidades
 
 ### 🛒 Loja & Atendimento Express (`public/index.html`)
-- Catálogo dinâmico de chopes e barris com filtros.
+- Catálogo de barris de chopp 50L com foto real e preço direto de fábrica.
 - Carrinho de compras em tempo real.
 - Agendamento e cálculo de entrega.
-- Integração de pagamento via PIX (QR Code & Copia e Cola).
+- Integração de pagamento via PIX (QR Code & Copia e Cola) e no ato da entrega.
 - Envio de pedido diretamente para o WhatsApp com resumo detalhado.
+- Interface 100% limpa para o cliente (sem links para o painel administrativo).
 
 ### 📊 Painel Administrativo (`public/admin.html`)
+- **Autenticação Segura:** Bloqueio com senha de acesso (`Lps27031981`).
 - **Dashboard Operacional:** Acompanhamento de faturamento, pedidos e clientes.
-- **Gestão de Produtos:** Cadastro, edição de preços, estoque e fotos de barris.
+- **Gestão de Produtos:** Cadastro e edição completa de nome, descrição personalizada, litragem (50L), preço, estoque e imagem.
 - **Gestão de Pedidos:** Mudança de status (Pendente, Preparando, Em Rota, Entregue).
 - **Radar de Prospecção & Maps Hunter:**
-  - Varredura e busca de estabelecimentos comerciais (bares, restaurantes, eventos) em raio geográfico.
+  - Varredura e busca de estabelecimentos comerciais (bares, restaurantes, eventos) em raio geográfico com mapa interativo.
   - Enriquecimento inteligente de leads (telefone, site, redes sociais, CNPJ e contato de tomadores de decisão).
-  - Gestão de pipeline de contato e exportação de leads.
+  - Gestão de pipeline de contato e exportação de leads em CSV/Excel.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
 - **Backend:** Node.js, Express, Axios, Cheerio, QRCode
-- **Frontend:** HTML5, CSS3 moderno, JavaScript (ES6+)
+- **Frontend:** HTML5, CSS3 moderno, JavaScript (ES6+), Leaflet Maps
 - **Banco de Dados:** Estrutura persistente JSON / Arquivos modulares
 
 ---
@@ -52,7 +62,7 @@ Sistema completo para operação e gestão de delivery de Chopp artesanal, integ
 
 4. **Acesse no navegador:**
    - Loja / Cliente: `http://localhost:3000`
-   - Painel Admin: `http://localhost:3000/admin.html`
+   - Painel Admin: `http://localhost:3000/admin` (Senha: `Lps27031981`)
 
 ---
 
