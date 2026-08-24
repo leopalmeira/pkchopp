@@ -520,7 +520,7 @@ function showSuccessModal(order) {
                   `_Pedido gravado via Plataforma PKCHOPP_`;
 
   const waBtn = document.getElementById('btnWhatsAppNotify');
-  if (waBtn) waBtn.href = `https://api.whatsapp.com/send?phone=5521999998888&text=${message}`;
+  if (waBtn) waBtn.href = `https://api.whatsapp.com/send?phone=5521970563826&text=${message}`;
 
   if (successModal) successModal.classList.add('active');
 }

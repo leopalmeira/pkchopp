@@ -59,7 +59,7 @@ const DEFAULT_SETTINGS = {
   pixKeyType: "E-mail",
   pixBeneficiary: "PKCHOPP DISTRIBUIDORA LTDA",
   pixCity: "RIO DE JANEIRO",
-  whatsappNumber: "5521999998888",
+  whatsappNumber: "5521970563826",
   deliveryFeeDefault: 0.00,
   minOrderValue: 200.00,
   address: "Av. Brasil, Rio de Janeiro - RJ",
