@@ -48,12 +48,16 @@ function setupEventListeners() {
   if (closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
   if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
 
-  // Tabs de Categoria (Todos, 50L, 30L)
-  document.querySelectorAll('.tab-btn').forEach(btn => {
+  // Botão da Barra Flutuante Mobile
+  const btnFloating = document.getElementById('btnOpenCartFloating');
+  if (btnFloating) btnFloating.addEventListener('click', openCart);
+
+  // Filtros de Categoria (Todos, 50L)
+  document.querySelectorAll('.filter-btn, .tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.filter-btn, .tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      currentCategory = btn.dataset.category;
+      currentCategory = btn.dataset.category || 'all';
       renderProducts();
     });
   });
@@ -134,7 +138,7 @@ function setupEventListeners() {
       navigator.clipboard.writeText(pixText).then(() => {
         btnCopyPix.innerHTML = '<i class="fa-solid fa-check"></i> Código Pix Copiado!';
         setTimeout(() => {
-          btnCopyPix.innerHTML = '<i class="fa-regular fa-copy"></i> Copiar Código Pix Copia e Cola';
+          btnCopyPix.innerHTML = '<i class="fa-regular fa-copy"></i> Copiar Código Pix';
         }, 3000);
       });
     });
@@ -191,12 +195,12 @@ function renderProducts(searchTerm = '') {
 
     return `
       <div class="product-card">
-        <div class="card-img-wrap">
-          <span class="badge-atacado"><i class="fa-solid fa-truck-fast"></i> Pronta Entrega RJ</span>
+        <div class="card-img-box">
+          <span class="badge-tag-card"><i class="fa-solid fa-truck-fast"></i> Pronta Entrega RJ</span>
           <img src="${prod.image || '/images/barril-brahma.jpg'}" alt="${prod.name}" loading="lazy" onerror="this.src='/images/barril-brahma.jpg'">
         </div>
         <div class="card-body">
-          <div class="tags-row">
+          <div class="card-tags">
             ${litersBadge}
             <span class="tag-chip"><i class="fa-solid fa-bolt"></i> Válvula S</span>
             ${(prod.tags || []).filter(t => !t.includes('Litros')).map(tag => `<span class="tag-chip">${tag}</span>`).join('')}
@@ -205,24 +209,24 @@ function renderProducts(searchTerm = '') {
           <h3 class="card-title">${prod.name}</h3>
           <p class="card-desc">${prod.description || ''}</p>
           
-          <div class="card-pricing-box">
+          <div class="card-price-row">
             <div>
-              <div class="price-label">Preço por Barril</div>
-              <div class="price-main">R$ ${price.toFixed(2).replace('.', ',')}</div>
+              <div class="price-label">Preço Unitário</div>
+              <div class="price-number">R$ ${price.toFixed(2).replace('.', ',')}</div>
             </div>
             <div style="text-align:right;">
-              <span style="font-size:0.78rem; color:var(--text-slate-300); font-weight:700;">${prod.unit || 'Barril 50L'}</span>
-              ${hasDiscount ? `<div style="font-size:0.8rem; color:var(--text-slate-500); text-decoration:line-through;">R$ ${prod.price.toFixed(2).replace('.', ',')}</div>` : ''}
+              <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">${prod.unit || 'Barril 50L'}</span>
+              ${hasDiscount ? `<div style="font-size:0.75rem; color:var(--text-dim); text-decoration:line-through;">R$ ${prod.price.toFixed(2).replace('.', ',')}</div>` : ''}
             </div>
           </div>
 
-          <div class="card-actions-row">
-            <div class="qty-control-bees">
-              <button type="button" class="qty-btn" onclick="changeCardQty('${prod.id}', -1)">-</button>
-              <input type="text" id="qty-${prod.id}" class="qty-input" value="1" readonly>
-              <button type="button" class="qty-btn" onclick="changeCardQty('${prod.id}', 1)">+</button>
+          <div class="card-action-bar">
+            <div class="stepper-control">
+              <button type="button" class="stepper-btn" onclick="changeCardQty('${prod.id}', -1)">-</button>
+              <input type="text" id="qty-${prod.id}" class="stepper-input" value="1" readonly>
+              <button type="button" class="stepper-btn" onclick="changeCardQty('${prod.id}', 1)">+</button>
             </div>
-            <button class="btn-add-bees" onclick="addToCart('${prod.id}')">
+            <button class="btn-add-keg" onclick="addToCart('${prod.id}')">
               <i class="fa-solid fa-cart-plus"></i> Pedir Barril
             </button>
           </div>
@@ -278,19 +282,26 @@ function saveCart() {
   localStorage.setItem('pkchopp_cart', JSON.stringify(cartState));
 }
 
-// Atualizar UI do Carrinho
+// Atualizar UI do Carrinho & Barra Flutuante Mobile
 function updateCartUI() {
-  if (!cartCountBadge) return;
   const totalKegs = cartState.reduce((sum, it) => sum + it.quantity, 0);
-  cartCountBadge.innerText = totalKegs;
+  const subtotal = cartState.reduce((sum, it) => sum + (it.price * it.quantity), 0);
+
+  if (cartCountBadge) cartCountBadge.innerText = totalKegs;
+
+  const floatingBar = document.getElementById('mobileFloatingBar');
+  const floatingCountText = document.getElementById('floatingCountText');
+  const floatingTotalText = document.getElementById('floatingTotalText');
 
   if (cartState.length === 0) {
+    if (floatingBar) floatingBar.classList.remove('visible');
+
     if (cartItemsList) {
       cartItemsList.innerHTML = `
-        <div style="text-align:center; padding: 4rem 1rem; color: var(--text-slate-400);">
-          <i class="fa-solid fa-beer-mug-empty fa-3x" style="color: var(--bees-yellow); opacity: 0.5; margin-bottom: 1rem;"></i>
-          <h4 style="color:#fff; font-size:1.15rem; font-weight:800;">Nenhum barril adicionado ainda</h4>
-          <p style="font-size:0.85rem; margin-top:0.4rem;">Selecione os barris de chopp desejados para fechar o pedido.</p>
+        <div style="text-align:center; padding: 3rem 1rem; color: var(--text-muted);">
+          <i class="fa-solid fa-beer-mug-empty fa-3x" style="color: var(--gold-primary); opacity: 0.4; margin-bottom: 0.85rem;"></i>
+          <h4 style="color:#fff; font-size:1.05rem; font-weight:800;">Nenhum barril adicionado</h4>
+          <p style="font-size:0.8rem; margin-top:0.35rem;">Selecione os barris de chopp desejados para continuar.</p>
         </div>
       `;
     }
@@ -298,13 +309,21 @@ function updateCartUI() {
     return;
   }
 
+  if (floatingBar) {
+    floatingBar.classList.add('visible');
+    if (floatingCountText) {
+      floatingCountText.innerText = `${totalKegs} ${totalKegs === 1 ? 'barril no pedido' : 'barris no pedido'}`;
+    }
+    if (floatingTotalText) {
+      floatingTotalText.innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+    }
+  }
+
   if (cartDrawerFooter) cartDrawerFooter.style.display = 'block';
 
-  let subtotal = 0;
   if (cartItemsList) {
     cartItemsList.innerHTML = cartState.map((item, index) => {
       const itemTotal = item.price * item.quantity;
-      subtotal += itemTotal;
 
       return `
         <div class="cart-item-card">
@@ -313,11 +332,11 @@ function updateCartUI() {
             <div class="cart-item-title">${item.name}</div>
             <div class="cart-item-unit">${item.unit || 'Barril 50L'}</div>
             <div class="cart-item-bottom">
-              <span style="font-weight:900; color:#fff; font-size:0.92rem;">R$ ${itemTotal.toFixed(2).replace('.', ',')}</span>
-              <div class="qty-control-bees" style="transform: scale(0.85); transform-origin: right center;">
-                <button type="button" class="qty-btn" onclick="updateCartItemQty(${index}, -1)">-</button>
-                <input type="text" class="qty-input" value="${item.quantity}" readonly>
-                <button type="button" class="qty-btn" onclick="updateCartItemQty(${index}, 1)">+</button>
+              <span style="font-weight:900; color:#fff; font-size:0.88rem;">R$ ${itemTotal.toFixed(2).replace('.', ',')}</span>
+              <div class="stepper-control" style="transform: scale(0.85); transform-origin: right center;">
+                <button type="button" class="stepper-btn" onclick="updateCartItemQty(${index}, -1)">-</button>
+                <input type="text" class="stepper-input" value="${item.quantity}" readonly>
+                <button type="button" class="stepper-btn" onclick="updateCartItemQty(${index}, 1)">+</button>
               </div>
               <button class="btn-remove-item" onclick="removeCartItem(${index})" title="Remover barril">
                 <i class="fa-solid fa-trash-can"></i>
