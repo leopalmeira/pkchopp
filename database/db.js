@@ -40,7 +40,7 @@ const DEFAULT_PRODUCTS = [
     description: "Chopp Brahma é uma bebida leve e não pasteurizada, do estilo American Lager, com teor alcoólico de 4,8%. Ele destaca-se pelo frescor, coloração amarelo-palha, colarinho denso e cremoso, além de notas suaves de malte e lúpulo no paladar",
     liters: 50,
     unit: "Barril 50L",
-    price: 479.00,
+    price: 610.00,
     promotionalPrice: null,
     stock: 50,
     valveType: "Padrão S (Micromatic)",

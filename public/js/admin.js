@@ -1006,7 +1006,7 @@ function recalculateQuickOrderTotal() {
   if (!prodSelect || !qtyInput) return;
 
   const selectedOpt = prodSelect.options[prodSelect.selectedIndex];
-  const price = selectedOpt ? parseFloat(selectedOpt.getAttribute('data-price') || '479') : 479;
+  const price = selectedOpt ? parseFloat(selectedOpt.getAttribute('data-price') || '610') : 610;
   const qty = parseInt(qtyInput.value, 10) || 1;
   const total = price * qty;
 
@@ -1030,7 +1030,7 @@ async function handleSaveQuickOrder(e) {
   const selectedOpt = prodSelect.options[prodSelect.selectedIndex];
   const prodId = prodSelect.value;
   const prodName = selectedOpt ? selectedOpt.getAttribute('data-name') : 'Barril de Chopp Puro Malte 50L';
-  const prodPrice = selectedOpt ? parseFloat(selectedOpt.getAttribute('data-price')) : 479;
+  const prodPrice = selectedOpt ? parseFloat(selectedOpt.getAttribute('data-price')) : 610;
   const qty = parseInt(qtyInput.value, 10) || 1;
   const total = prodPrice * qty;
   const deliveryDate = deliveryDateInput.value;
@@ -1090,7 +1090,7 @@ function handleSendWhatsAppOrderConfirmation() {
 
   const selectedOpt = prodSelect.options[prodSelect.selectedIndex];
   const prodName = selectedOpt ? selectedOpt.getAttribute('data-name') : 'Barril de Chopp Puro Malte 50 Litros';
-  const prodPrice = selectedOpt ? parseFloat(selectedOpt.getAttribute('data-price')) : 479;
+  const prodPrice = selectedOpt ? parseFloat(selectedOpt.getAttribute('data-price')) : 610;
   const qty = parseInt(qtyInput.value, 10) || 1;
   const total = (prodPrice * qty).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   const deliveryDate = deliveryDateInput.value ? deliveryDateInput.value.split('-').reverse().join('/') : 'Amanhã';
