@@ -14,9 +14,11 @@ window.checkAdminAuth = function() {
   const token = sessionStorage.getItem('pkchopp_auth_token');
   const overlay = document.getElementById('adminAuthOverlay');
   if (token === 'pkchopp-auth-session-valid') {
+    document.body.classList.remove('locked');
     if (overlay) overlay.style.display = 'none';
     return true;
   } else {
+    document.body.classList.add('locked');
     if (overlay) overlay.style.display = 'flex';
     return false;
   }
@@ -44,6 +46,7 @@ window.handleAdminLogin = async function(e) {
 
     if (data.success && data.token) {
       sessionStorage.setItem('pkchopp_auth_token', data.token);
+      document.body.classList.remove('locked');
       const overlay = document.getElementById('adminAuthOverlay');
       if (overlay) overlay.style.display = 'none';
       loadAllAdminData();
@@ -63,6 +66,7 @@ window.handleAdminLogin = async function(e) {
 
 window.handleAdminLogout = function() {
   sessionStorage.removeItem('pkchopp_auth_token');
+  document.body.classList.add('locked');
   const overlay = document.getElementById('adminAuthOverlay');
   const input = document.getElementById('adminPasswordInput');
   if (input) input.value = '';

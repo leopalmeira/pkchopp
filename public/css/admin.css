@@ -3,6 +3,16 @@
    DESIGN SYSTEM PROFISSIONAL: SLATE NAVY, ROYAL BLUE, CRISP ENTERPRISE UI
    ========================================================= */
 
+body.locked .sidebar,
+body.locked .main-admin,
+body.locked .modal-admin-backdrop {
+  display: none !important;
+}
+
+body.locked #adminAuthOverlay {
+  display: flex !important;
+}
+
 :root {
   /* Paleta Corporativa TOTVS / Enterprise */
   --erp-bg: #0B1120;
