@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PKCHOPP ERP | Radar de Prospecção B2B & Gestão Territorial</title>
+
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Leaflet GIS Engine (Zoom Direto Sem Ctrl & Pins Interativos) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <!-- Menu Lateral de Navegação TOTVS ERP -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-icon-admin">
+        <i class="fa-solid fa-boxes-stacked"></i>
+      </div>
+      <div class="brand-name-admin">
+        <h2>PK<span>CHOPP</span> ERP</h2>
+        <p>Distribuição B2B v4.5</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      
+      <div class="nav-section-title">Módulo Comercial & GIS</div>
+
+      <div class="nav-item" data-section="dashboard">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Dashboard Executivo</span>
+      </div>
+
+      <div class="nav-item active" data-section="maps">
+        <i class="fa-solid fa-satellite-dish"></i>
+        <span>Radar de Prospecção B2B</span>
+        <span class="nav-badge">Ao Vivo</span>
+      </div>
+
+      <div class="nav-item" data-section="orders">
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <span>Pedidos de Venda (PV)</span>
+        <span id="pendingOrdersBadge" class="nav-badge-gold" style="display: none;">0</span>
+      </div>
+
+      <div class="nav-section-title">Supply Chain & Estoque</div>
+
+      <div class="nav-item" data-section="products">
+        <i class="fa-solid fa-cubes-stacked"></i>
+        <span>Catálogo de Barris</span>
+      </div>
+
+      <div class="nav-section-title">Cadastros & CRM</div>
+
+      <div class="nav-item" data-section="clients">
+        <i class="fa-solid fa-address-book"></i>
+        <span>Cadastro de PDVs & Bares</span>
+      </div>
+
+      <div class="nav-section-title">Controladoria & Faturamento</div>
+
+      <div class="nav-item" data-section="settings">
+        <i class="fa-solid fa-sliders"></i>
+        <span>Parâmetros & Gateway PIX</span>
+      </div>
+
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="/" target="_blank" class="btn-open-store">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        <span>Acessar Portal do Lojista (Sem Login)</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Área de Trabalho Principal -->
+  <main class="main-admin" style="padding-top: 0.85rem;">
+
+    <!-- SEÇÃO 1: DASHBOARD EXECUTIVO -->
+    <section id="section-dashboard" class="admin-section">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon-wrap icon-green">
+            <i class="fa-solid fa-brazilian-real-sign"></i>
+          </div>
+          <div class="stat-info">
+            <span>Faturamento Bruto Acumulado</span>
+            <h3 id="statRevenue">R$ 0,00</h3>
+            <div class="stat-trend-tag"><i class="fa-solid fa-arrow-trend-up"></i> +24.8% vs período anterior</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrap icon-blue">
+            <i class="fa-solid fa-truck-ramp-box"></i>
+          </div>
+          <div class="stat-info">
+            <span>Pedidos de Venda Emitidos</span>
+            <h3 id="statOrders">0</h3>
+            <div class="stat-trend-tag" style="color:#38BDF8;"><i class="fa-solid fa-check"></i> 100% integrados</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrap icon-gold">
+            <i class="fa-solid fa-boxes-stacked"></i>
+          </div>
+          <div class="stat-info">
+            <span>Barris de Chopp Distribuídos</span>
+            <h3 id="statKegs">0 barris</h3>
+            <div class="stat-trend-tag" style="color:var(--totvs-gold);"><i class="fa-solid fa-bolt"></i> Líquido Puro Malte</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrap icon-purple">
+            <i class="fa-solid fa-shop"></i>
+          </div>
+          <div class="stat-info">
+            <span>Pontos de Venda Ativos (PDVs)</span>
+            <h3 id="statClients">0</h3>
+            <div class="stat-trend-tag" style="color:var(--erp-purple);"><i class="fa-solid fa-chart-simple"></i> Cobertura RJ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-header-bar">
+          <h3><i class="fa-solid fa-list-check" style="color: #38BDF8;"></i> Fluxo Recente de Pedidos de Venda (PV)</h3>
+          <button class="btn-admin-secondary" onclick="switchSection('orders')">Ver Grade Completa</button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nº Pedido</th>
+              <th>Cliente / Razão Social</th>
+              <th>Volume (Barris)</th>
+              <th>Valor Total</th>
+              <th>Condição de Pgto</th>
+              <th>Status Operacional</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="dashboardRecentOrders">
+            <!-- Preenchido via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 2: RADAR DE PROSPECÇÃO B2B (REVOLUCIONADO) -->
+    <!-- SEÇÃO 2: RADAR DE PROSPECÇÃO B2B (100% LIMPO & ESPAÇOSO) -->
+    <section id="section-maps" class="admin-section active">
+      
+      <!-- BARRA DE FILTRO & CONTROLE ULTRA-COMPACTA -->
+      <div class="radar-controls-card" style="padding: 0.45rem 0.75rem; margin-bottom: 0.6rem;">
+        <div class="radar-filter-row" style="align-items: center; gap: 0.5rem;">
+          
+          <div style="flex: 1.5; position: relative;">
+            <input type="text" id="radarSearchQuery" placeholder="🔍 Digite o nome do bar, choperia, bairro ou rua..." style="width: 100%; background: #0B1120; border: 1px solid var(--erp-border-light); padding: 0.45rem 0.75rem; border-radius: var(--radius-xs); color: #fff; font-size: 0.82rem;">
+          </div>
+
+          <div style="flex: 1.1;">
+            <select id="radarFilterNeighborhood" style="width: 100%; background: #0B1120; border: 1px solid var(--erp-border-light); padding: 0.45rem 0.65rem; border-radius: var(--radius-xs); color: #fff; font-size: 0.8rem;">
+              <option value="all">📍 Todo o Rio de Janeiro</option>
+              <option value="Freguesia">Freguesia & Jacarepaguá</option>
+              <option value="Tijuca">Tijuca & Praça Varnhagen</option>
+              <option value="Barra da Tijuca">Barra da Tijuca</option>
+              <option value="Recreio dos Bandeirantes">Recreio dos Bandeirantes</option>
+              <option value="Ilha do Governador">Ilha do Governador</option>
+              <option value="Madureira">Madureira & Irajá</option>
+              <option value="Bangu">Bangu & Realengo</option>
+              <option value="Campo Grande">Campo Grande</option>
+              <option value="Lapa">Lapa & Centro</option>
+            </select>
+          </div>
+
+          <div style="width: 95px;">
+            <select id="radarFilterRadius" style="width: 100%; background: #0B1120; border: 1px solid var(--erp-border-light); padding: 0.45rem 0.5rem; border-radius: var(--radius-xs); color: #fff; font-size: 0.8rem;">
+              <option value="5 km">5 km</option>
+              <option value="10 km" selected>10 km</option>
+              <option value="15 km">15 km</option>
+              <option value="25 km">25 km</option>
+              <option value="50 km">50 km</option>
+            </select>
+          </div>
+
+          <div style="width: 110px;">
+            <select id="radarFilterClassification" style="width: 100%; background: #0B1120; border: 1px solid var(--erp-border-light); padding: 0.45rem 0.5rem; border-radius: var(--radius-xs); color: #fff; font-size: 0.8rem;">
+              <option value="all">Classes</option>
+              <option value="HOT">🔥 HOT</option>
+              <option value="WARM">🟠 WARM</option>
+              <option value="COLD">⚪ COLD</option>
+              <option value="CLIENTE_PKCHOPP">🟢 Clientes</option>
+            </select>
+          </div>
+
+          <div style="display: flex; gap: 0.35rem; align-items: center;">
+            <button id="btnTriggerQuickSearch" class="btn-admin-action" style="padding: 0.45rem 0.85rem; font-size: 0.78rem;" title="Filtrar">
+              <i class="fa-solid fa-magnifying-glass"></i> Filtrar
+            </button>
+            <button id="btnOpenProspectingModal2" class="btn-admin-action" style="background: linear-gradient(135deg, #0284C7, #0369A1); padding: 0.45rem 0.85rem; font-size: 0.78rem;" title="Rastrear novos locais">
+              <i class="fa-solid fa-satellite-dish"></i> Rastrear
+            </button>
+            <button id="btnExportLeadsCSV" class="btn-admin-secondary" style="padding: 0.45rem 0.65rem; font-size: 0.75rem;" title="Exportar para Excel">
+              <i class="fa-solid fa-file-excel" style="color:#22C55E;"></i> CSV
+            </button>
+            <button id="btnOpenHistoryModal" class="btn-admin-secondary" style="padding: 0.45rem 0.65rem; font-size: 0.75rem;" title="Histórico">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CORPO PRINCIPAL DO RADAR: MAPA À ESQUERDA + DOSSIÊS DE LEADS À DIREITA -->
+      <div class="maps-hunter-layout">
+        
+        <!-- MAPA GOOGLE MAPS INTERATIVO EMBUTIDO COM INSPECTOR FLUTUANTE -->
+        <div class="maps-webview-card">
+          <div class="maps-frame-container" style="position:relative; width:100%; height:100%;">
+            <div id="interactiveMap" style="width: 100%; height: 100%; z-index: 1;"></div>
+
+            <!-- CARD FLUTUANTE DE DETALHES E FOTOS DO ESTABELECIMENTO NO MAPA -->
+            <div id="mapPlaceFloatingCard" class="map-place-floating-card" style="display: none;">
+              <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+                <img id="floatingPlaceThumb" src="" alt="Fachada" class="floating-thumb">
+                <div style="flex: 1;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span id="floatingPlaceVolumeBadge" class="floating-volume-badge">🔥 HOT • Score 95</span>
+                    <button type="button" class="floating-close-btn" onclick="closeFloatingPlaceCard()" title="Fechar">✕</button>
+                  </div>
+                  <h4 id="floatingPlaceName" class="floating-title">Nome do Estabelecimento</h4>
+                  <div id="floatingPlaceAddress" class="floating-address"><i class="fa-solid fa-location-dot"></i> Endereço</div>
+                  <div id="floatingPlacePhones" class="floating-phones">
+                    <span>📞 <strong id="floatingPhoneFixo">-</strong></span>
+                    <span style="color:#25D366;">📱 <strong id="floatingPhoneWa">-</strong></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- BARRA DE AÇÕES DIRETAS DO LOCAL NO MAPA -->
+              <div style="display:flex; gap:0.4rem; margin-top:0.6rem; padding-top:0.6rem; border-top:1px dashed rgba(255,255,255,0.1); flex-wrap:wrap;">
+                <button type="button" id="btnFloatingRoute" class="btn-mini-action" style="background:#0284C7; color:#fff; font-weight:800;" title="Traçar rota de entrega no mapa e abrir GPS">
+                  <i class="fa-solid fa-route"></i> Traçar Rota
+                </button>
+                <a id="btnFloatingGmaps" href="#" target="_blank" class="btn-mini-action" style="background:rgba(2,132,199,0.15); color:#38BDF8; border-color:rgba(2,132,199,0.3);" title="Navegar no Google Maps">
+                  <i class="fa-solid fa-location-arrow"></i> GPS
+                </a>
+                <a id="btnFloatingWa" href="#" target="_blank" class="btn-mini-action btn-mini-wa" title="WhatsApp">
+                  <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                </a>
+                <button type="button" id="btnFloatingDossier" class="btn-mini-action btn-mini-dossier" title="Editar Ficha">
+                  <i class="fa-solid fa-file-pen"></i> Ficha
+                </button>
+                <button type="button" id="btnFloatingDelete" class="btn-mini-action" style="background:rgba(239,68,68,0.15); color:#ef4444; border-color:rgba(239,68,68,0.3); margin-left:auto;" title="Excluir do Radar">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+
+              <!-- GALERIA DE FOTOS MINIATURA -->
+              <div id="floatingPhotosGallery" class="floating-gallery-row">
+                <!-- Inserido dinamicamente via JS -->
+              </div>
+            </div>
+
+            <!-- CARD INFORMATIVO DE ROTA ATIVA / NAVEGAÇÃO -->
+            <div id="mapRouteInfoCard" class="map-route-info-card" style="display: none;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
+                <div style="display:flex; align-items:center; gap:0.6rem;">
+                  <i class="fa-solid fa-truck-fast" style="color:#38BDF8; font-size:1.3rem;"></i>
+                  <div>
+                    <div style="font-size:0.85rem; font-weight:900; color:#fff;" id="routeTargetName">Rota de Entrega</div>
+                    <div style="font-size:0.75rem; color:#A7F3D0;" id="routeDistanceTime">Distância: 12.5 km • Tempo: ~22 min</div>
+                  </div>
+                </div>
+                <div style="display:flex; gap:0.4rem; align-items:center;">
+                  <a id="btnOpenGmapsNav" href="#" target="_blank" class="btn-mini-action" style="background:#0284C7; color:#fff; padding:0.35rem 0.65rem; font-weight:800;">
+                    <i class="fa-solid fa-location-arrow"></i> Google Maps
+                  </a>
+                  <a id="btnOpenWazeNav" href="#" target="_blank" class="btn-mini-action" style="background:#33CCFF; color:#000; font-weight:900; padding:0.35rem 0.65rem;">
+                    <i class="fa-brands fa-waze"></i> Waze
+                  </a>
+                  <button type="button" class="floating-close-btn" onclick="clearMapRoute()" title="Remover Rota">✕</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- LISTA DE ESTABELECIMENTOS / CARDS MODERNOS COM INTELIGÊNCIA COMERCIAL -->
+        <div class="leads-sidebar-card">
+          <div class="leads-header">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="font-size:0.95rem; font-weight:800; color:#fff; display:flex; align-items:center; gap:0.5rem;">
+                <i class="fa-solid fa-bullseye" style="color: #38BDF8;"></i> Estabelecimentos Mapeados
+              </h3>
+              <span id="leadsCountBadge" class="leads-count-chip">0 leads</span>
+            </div>
+          </div>
+
+          <div id="leadsListContainer" class="leads-list">
+            <!-- Inserido dinamicamente via JS -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SEÇÃO 3: GESTÃO DE PEDIDOS DE VENDA (PV) -->
+    <section id="section-orders" class="admin-section">
+      <div class="table-card">
+        <div class="table-header-bar">
+          <h3><i class="fa-solid fa-file-invoice-dollar" style="color: #38BDF8;"></i> Grade Geral de Pedidos de Venda (PV)</h3>
+          <div style="display:flex; gap:0.75rem;">
+            <select id="filterOrderStatus" style="background: #0B1120; color:#fff; border: 1px solid var(--erp-border-light); padding: 0.45rem 0.85rem; border-radius: var(--radius-xs); font-size: 0.8rem; font-weight:700;">
+              <option value="all">Todos os Status</option>
+              <option value="Aguardando Pagamento">Aguardando Pagamento</option>
+              <option value="Confirmado">Confirmado</option>
+              <option value="Em Separação">Em Separação</option>
+              <option value="Em Rota de Entrega">Em Rota de Entrega</option>
+              <option value="Entregue">Entregue</option>
+              <option value="Cancelado">Cancelado</option>
+            </select>
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nº Pedido</th>
+              <th>PDV / Contato</th>
+              <th>Endereço / Agendamento</th>
+              <th>Barris Solicitados</th>
+              <th>Valor Total</th>
+              <th>Condição Pgto</th>
+              <th>Status Operacional</th>
+              <th>Ação / Workflow</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTableBody">
+            <!-- Inserido dinamicamente via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 4: CATÁLOGO & ESTOQUE DE BARRIS (SIMPLIFICADO) -->
+    <section id="section-products" class="admin-section">
+      <div class="table-card">
+        <div class="table-header-bar">
+          <h3><i class="fa-solid fa-cubes-stacked" style="color: #38BDF8;"></i> Catálogo de Produtos & Estoque de Barris</h3>
+          <button id="btnOpenNewProductModal" class="btn-admin-action">
+            <i class="fa-solid fa-plus"></i> + Cadastrar Novo Produto
+          </button>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width: 50%;">Descrição do Produto</th>
+              <th style="width: 20%;">Preço Unitário (R$)</th>
+              <th style="width: 15%;">Quantidade Disponível (Estoque)</th>
+              <th style="width: 15%;">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="productsTableBody">
+            <!-- Preenchido via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 5: CADASTRO DE CLIENTES & BARES (COM AUTOPREENCHIMENTO) -->
+    <section id="section-clients" class="admin-section">
+      <div class="table-card">
+        <div class="table-header-bar">
+          <h3><i class="fa-solid fa-address-book" style="color: #38BDF8;"></i> Cadastro Central de Bares & Clientes</h3>
+          <button id="btnOpenNewClientModal" class="btn-admin-action">
+            <i class="fa-solid fa-plus"></i> + Cadastrar Novo Bar / PDV
+          </button>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Bar / Estabelecimento</th>
+              <th>Responsável / Dono</th>
+              <th>Telefone / WhatsApp</th>
+              <th>Endereço de Entrega</th>
+              <th>Giro Estimado</th>
+              <th>Faturamento Total</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="clientsTableBody">
+            <!-- Preenchido via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 6: PARÂMETROS & GATEWAY PIX -->
+    <section id="section-settings" class="admin-section">
+      <div class="table-card" style="max-width: 840px;">
+        <div class="table-header-bar">
+          <h3><i class="fa-solid fa-sliders" style="color: #38BDF8;"></i> Parâmetros Fiscais, Comerciais & Gateway PIX BACEN</h3>
+        </div>
+
+        <form id="settingsForm" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+              <label style="font-weight: 700; font-size: 0.82rem; color: #fff; display:block; margin-bottom:0.4rem;">Razão Social / Nome da Distribuidora</label>
+              <input type="text" id="setCompanyName" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.6rem 0.8rem; border-radius:var(--radius-xs); color:#fff;">
+            </div>
+            <div>
+              <label style="font-weight: 700; font-size: 0.82rem; color: #fff; display:block; margin-bottom:0.4rem;">WhatsApp Central de Vendas</label>
+              <input type="text" id="setWhatsappNumber" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.6rem 0.8rem; border-radius:var(--radius-xs); color:#fff;">
+            </div>
+          </div>
+
+          <div style="background: rgba(16, 185, 129, 0.06); border: 1px solid rgba(16, 185, 129, 0.25); padding: 1.25rem; border-radius: var(--radius-sm);">
+            <h4 style="color: var(--erp-success); margin-bottom: 0.85rem; font-size: 0.9rem; font-weight:800;"><i class="fa-brands fa-pix"></i> Gateway de Liquidação PIX Padrão BACEN (BR Code EMV)</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div>
+                <label style="font-weight: 700; font-size: 0.8rem; color: #fff; display:block; margin-bottom:0.4rem;">Chave PIX (E-mail, CPF/CNPJ ou Telefone)</label>
+                <input type="text" id="setPixKey" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.6rem 0.8rem; border-radius:var(--radius-xs); color:#fff;">
+              </div>
+              <div>
+                <label style="font-weight: 700; font-size: 0.8rem; color: #fff; display:block; margin-bottom:0.4rem;">Beneficiário Titular</label>
+                <input type="text" id="setPixBeneficiary" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.6rem 0.8rem; border-radius:var(--radius-xs); color:#fff;">
+              </div>
+              <div>
+                <label style="font-weight: 700; font-size: 0.8rem; color: #fff; display:block; margin-bottom:0.4rem;">Praça de Liquidação (Cidade)</label>
+                <input type="text" id="setPixCity" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.6rem 0.8rem; border-radius:var(--radius-xs); color:#fff;">
+              </div>
+              <div>
+                <label style="font-weight: 700; font-size: 0.8rem; color: #fff; display:block; margin-bottom:0.4rem;">Centro de Distribuição Físico</label>
+                <input type="text" id="setAddress" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.6rem 0.8rem; border-radius:var(--radius-xs); color:#fff;">
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-weight: 700; font-size: 0.82rem; color: #fff; display:block; margin-bottom:0.4rem;">Template de Abordagem Comercial WhatsApp ({nome} será substituído automaticamente)</label>
+            <textarea id="setLeadWelcomeMsg" rows="3" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.6rem 0.8rem; border-radius:var(--radius-xs); color:#fff; resize:vertical;"></textarea>
+          </div>
+
+          <button type="submit" class="btn-admin-action" style="align-self: flex-start;">
+            <i class="fa-solid fa-floppy-disk"></i> Salvar Parâmetros
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODAL: PROSPECÇÃO EM LOTE COM PROGRESSO VIVO -->
+  <!-- ========================================== -->
+  <div id="modalBatchProspecting" class="modal-admin-backdrop">
+    <div class="modal-admin-box" style="max-width: 650px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; border-bottom:1px solid var(--erp-border); padding-bottom:0.75rem;">
+        <div>
+          <h3 style="color:#fff; font-size:1.15rem; font-weight:900;"><i class="fa-solid fa-satellite-dish" style="color:#38BDF8;"></i> Radar de Prospecção Territorial em Lote</h3>
+          <p style="color:var(--text-secondary); font-size:0.78rem; margin-top:0.2rem;">Pesquisa multi-termos, enriquecimento de contatos, eliminação de duplicidades e score B2B.</p>
+        </div>
+        <button type="button" class="btn-admin-secondary" onclick="closeProspectingModal()" style="padding:0.3rem 0.6rem;">✕</button>
+      </div>
+
+      <div id="prospectingConfigStep">
+        <div style="margin-bottom: 1rem;">
+          <label style="font-size:0.8rem; font-weight:800; color:#fff; display:block; margin-bottom:0.4rem;">Selecione os Bairros / Polos Gastronômicos para Rastrear:</label>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; background:#0B1120; padding:0.85rem; border-radius:var(--radius-xs); border:1px solid var(--erp-border-light);">
+            <label style="font-size:0.78rem; color:#fff; display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+              <input type="checkbox" class="bairro-cb" value="Tijuca" checked> Tijuca & Praça Varnhagen
+            </label>
+            <label style="font-size:0.78rem; color:#fff; display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+              <input type="checkbox" class="bairro-cb" value="Barra da Tijuca" checked> Barra da Tijuca & Olegário
+            </label>
+            <label style="font-size:0.78rem; color:#fff; display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+              <input type="checkbox" class="bairro-cb" value="Recreio dos Bandeirantes" checked> Recreio dos Bandeirantes
+            </label>
+            <label style="font-size:0.78rem; color:#fff; display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+              <input type="checkbox" class="bairro-cb" value="Freguesia" checked> Freguesia (Jacarepaguá)
+            </label>
+            <label style="font-size:0.78rem; color:#fff; display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+              <input type="checkbox" class="bairro-cb" value="Ilha do Governador" checked> Ilha do Governador (Praia da Bica)
+            </label>
+            <label style="font-size:0.78rem; color:#fff; display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+              <input type="checkbox" class="bairro-cb" value="Madureira" checked> Madureira & Irajá
+            </label>
+            <label style="font-size:0.78rem; color:#fff; display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+              <input type="checkbox" class="bairro-cb" value="Bangu" checked> Bangu & Realengo
+            </label>
+            <label style="font-size:0.78rem; color:#fff; display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+              <input type="checkbox" class="bairro-cb" value="Campo Grande" checked> Campo Grande & Zona Oeste
+            </label>
+            <label style="font-size:0.78rem; color:#fff; display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+              <input type="checkbox" class="bairro-cb" value="Lapa" checked> Lapa & Centro
+            </label>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1.25rem;">
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Raio de Cobertura</label>
+            <select id="modalRadiusSelect" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.5rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+              <option value="5 km">5 km</option>
+              <option value="10 km" selected>10 km</option>
+              <option value="15 km">15 km</option>
+              <option value="25 km">25 km</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Foco dos Estabelecimentos</label>
+            <select id="modalFocusSelect" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.5rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+              <option value="all" selected>Choperias, Bares, Pubs & Depósitos</option>
+              <option value="chopp_only">Apenas com Foco em Chopp</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:0.75rem;">
+          <button type="button" class="btn-admin-secondary" onclick="closeProspectingModal()">Cancelar</button>
+          <button type="button" id="btnStartBatchProspecting" class="btn-admin-action" style="padding:0.6rem 1.4rem; font-weight:900;">
+            <i class="fa-solid fa-play"></i> Iniciar Prospecção
+          </button>
+        </div>
+      </div>
+
+      <!-- ETAPA DE PROGRESSO VIVO -->
+      <div id="prospectingProgressStep" style="display:none; padding:1rem 0;">
+        <div style="margin-bottom:1rem;">
+          <div style="display:flex; justify-content:space-between; font-size:0.82rem; font-weight:800; color:#fff; margin-bottom:0.4rem;">
+            <span id="progressCurrentStatus">Consultando Google Maps Platform...</span>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div style="width:100%; height:10px; background:#0B1120; border-radius:5px; overflow:hidden; border:1px solid var(--erp-border-light);">
+            <div id="prospectingProgressBar" style="width:0%; height:100%; background:linear-gradient(90deg, #0284C7, #22C55E); transition: width 0.4s ease;"></div>
+          </div>
+        </div>
+
+        <div class="progress-steps-list">
+          <div id="step1" class="prog-step active"><i class="fa-solid fa-spinner fa-spin"></i> 1. Consultando Google Places & Coordenadas GPS</div>
+          <div id="step2" class="prog-step"><i class="fa-solid fa-circle-notch"></i> 2. Enriquecendo contatos (Validação de WhatsApp & Instagram públicos)</div>
+          <div id="step3" class="prog-step"><i class="fa-solid fa-circle-notch"></i> 3. Detectando evidências de chopp, marcas e estimativas de volume</div>
+          <div id="step4" class="prog-step"><i class="fa-solid fa-circle-notch"></i> 4. Classificando leads (HOT, WARM, COLD) e calculando score B2B</div>
+        </div>
+
+        <div id="prospectingResultSummary" style="display:none; background:rgba(2,132,199,0.1); border:1px solid rgba(2,132,199,0.3); padding:1rem; border-radius:var(--radius-sm); margin-top:1.25rem;">
+          <h4 style="color:#38BDF8; font-size:0.95rem; font-weight:900; margin-bottom:0.5rem;"><i class="fa-solid fa-circle-check"></i> PROSPECÇÃO CONCLUÍDA COM SUCESSO!</h4>
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.5rem; font-size:0.8rem; color:#fff;">
+            <div>Total Encontrados: <strong id="resTotalFound">0</strong></div>
+            <div>Novos Leads: <strong id="resTotalNew" style="color:#22C55E;">0</strong></div>
+            <div>Deduplicados: <strong id="resTotalDup">0</strong></div>
+            <div>🔥 HOT: <strong id="resHot" style="color:#ef4444;">0</strong></div>
+            <div>🟠 WARM: <strong id="resWarm" style="color:#f97316;">0</strong></div>
+            <div>⚪ COLD: <strong id="resCold" style="color:#94a3b8;">0</strong></div>
+          </div>
+          <div style="margin-top:1rem; text-align:right;">
+            <button type="button" class="btn-admin-action" onclick="finishProspectingAndRefresh()">
+              <i class="fa-solid fa-check"></i> Explorar Resultados no Radar
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: DOSSIÊ 360° / FICHA CADASTRAL 100% EDITÁVEL -->
+  <!-- ========================================== -->
+  <div id="modalLeadDossier" class="modal-admin-backdrop">
+    <div class="modal-admin-box" style="max-width: 780px;">
+      
+      <!-- CABEÇALHO DO DOSSIÊ -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--erp-border); padding-bottom:0.75rem;">
+        <div>
+          <h3 style="color:#fff; font-size:1.2rem; font-weight:900;">
+            <i class="fa-solid fa-file-pen" style="color:#38BDF8;"></i> Ficha Cadastral & Inteligência 360°
+          </h3>
+          <p style="color:var(--text-secondary); font-size:0.78rem; margin-top:0.2rem;">Edite qualquer informação do estabelecimento (nome, telefone, responsável, endereço) e salve as alterações.</p>
+        </div>
+        <button type="button" class="btn-admin-secondary" onclick="closeLeadDossierModal()" style="padding:0.3rem 0.6rem;">✕</button>
+      </div>
+
+      <form id="formLeadDossier" style="overflow-y:auto; max-height:calc(85vh - 140px); padding-right:0.5rem;">
+        <input type="hidden" id="dossierEditId">
+
+        <!-- BLOCO 1: DADOS PRINCIPAIS DO ESTABELECIMENTO -->
+        <div class="dossier-section-box">
+          <h4 class="dossier-sub-title"><i class="fa-solid fa-store"></i> Dados do Estabelecimento & Contato</h4>
+          
+          <div style="display:grid; grid-template-columns: 2fr 1fr; gap:0.85rem; margin-bottom:0.85rem;">
+            <div>
+              <label style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Nome do Estabelecimento / Bar *</label>
+              <input type="text" id="dossierEditName" required style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff; font-weight:800; font-size:0.9rem;">
+            </div>
+            <div>
+              <label style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Classificação no Radar *</label>
+              <select id="dossierEditClassification" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff; font-weight:800;">
+                <option value="HOT">🔥 HOT (Alto Potencial)</option>
+                <option value="WARM">🟠 WARM (Médio Giro)</option>
+                <option value="COLD">⚪ COLD (Em Validação)</option>
+                <option value="CLIENTE_PKCHOPP">🟢 CLIENTE ATIVO (Base Oficial)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.85rem; margin-bottom:0.85rem;">
+            <div>
+              <label style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">👤 Nome do Responsável / Contato *</label>
+              <input type="text" id="dossierEditResponsible" required placeholder="Ex: Jacques Rodrigues, Dono, Gerente" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff; font-weight:700;">
+            </div>
+            <div>
+              <label style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">📞 Telefone / WhatsApp Comercial *</label>
+              <input type="text" id="dossierEditPhone" required placeholder="(21) 98888-7777" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#22C55E; font-weight:800; font-size:0.9rem;">
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 2fr 1fr; gap:0.85rem;">
+            <div>
+              <label style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">📍 Endereço Completo de Entrega *</label>
+              <input type="text" id="dossierEditAddress" required style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+            </div>
+            <div>
+              <label style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Bairro / Região</label>
+              <input type="text" id="dossierEditNeighborhood" placeholder="Ex: Brás de Pina, Tijuca" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOCO 2: INTELIGÊNCIA COMERCIAL DE CHOPP & POTENCIAL -->
+        <div class="dossier-section-box">
+          <h4 class="dossier-sub-title" style="color:var(--totvs-gold);"><i class="fa-solid fa-beer-mug-empty"></i> Volume de Barris & Potencial Comercial</h4>
+          
+          <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:0.85rem; margin-bottom:0.85rem;">
+            <div>
+              <label style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Giro Semanal Estimado:</label>
+              <input type="text" id="dossierEditWeeklyVol" placeholder="Ex: 8 a 12 barris 50L / semana" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#38BDF8; font-weight:700;">
+            </div>
+            <div>
+              <label style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Potencial Mensal (R$):</label>
+              <input type="number" step="0.01" id="dossierEditMonthlyRev" placeholder="21000.00" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:var(--totvs-gold); font-weight:800;">
+            </div>
+            <div>
+              <label style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Marca de Chopp Atual:</label>
+              <input type="text" id="dossierEditBrand" placeholder="Ex: Brahma, Amstel, Heineken" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size:0.75rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Observações / Histórico de Negociação:</label>
+            <textarea id="dossierEditNotes" rows="2" placeholder="Digite notas internas sobre dias de entrega preferenciais, marcas consumidas ou negociação..." style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff; resize:vertical;"></textarea>
+          </div>
+        </div>
+
+        <!-- RODAPÉ DA FICHA COM AÇÕES -->
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--erp-border); padding-top:0.85rem; margin-top:0.5rem; flex-wrap:wrap; gap:0.5rem;">
+          <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+            <button type="button" id="btnDossierRoute" class="btn-admin-action" style="background:#0284C7;" onclick="handleDossierRoute()">
+              <i class="fa-solid fa-route"></i> Traçar Rota
+            </button>
+            <button type="button" id="btnDossierConvertClient" class="btn-admin-secondary" style="color:#22C55E; border-color:rgba(34,197,94,0.3); font-weight:800;">
+              <i class="fa-solid fa-user-check"></i> Tornar Cliente Oficial
+            </button>
+            <button type="button" id="btnDossierEmitOrder" class="btn-admin-action" style="background:#10B981;">
+              <i class="fa-solid fa-truck-fast"></i> + Fazer Pedido
+            </button>
+          </div>
+          <div style="display:flex; gap:0.5rem; margin-left:auto;">
+            <button type="button" id="btnDossierDelete" class="btn-admin-secondary" style="color:#ef4444; border-color:rgba(239,68,68,0.3);" onclick="handleDossierDelete()">
+              <i class="fa-solid fa-trash"></i> Excluir
+            </button>
+            <button type="button" class="btn-admin-secondary" onclick="closeLeadDossierModal()">Cancelar</button>
+            <button type="submit" id="btnSaveDossierChanges" class="btn-admin-action" style="background:#22C55E; font-weight:900; padding:0.6rem 1.4rem;">
+              <i class="fa-solid fa-floppy-disk"></i> Salvar Alterações
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: HISTÓRICO DE PROSPECÇÕES EM LOTE -->
+  <!-- ========================================== -->
+  <div id="modalProspectingHistory" class="modal-admin-backdrop">
+    <div class="modal-admin-box" style="max-width: 850px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; border-bottom:1px solid var(--erp-border); padding-bottom:0.75rem;">
+        <h3 style="color:#fff; font-size:1.15rem; font-weight:900;"><i class="fa-solid fa-clock-rotate-left" style="color:#38BDF8;"></i> Histórico de Execuções do Radar B2B</h3>
+        <button type="button" class="btn-admin-secondary" onclick="closeHistoryModal()" style="padding:0.3rem 0.6rem;">✕</button>
+      </div>
+
+      <div style="max-height: 400px; overflow-y:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Data/Hora</th>
+              <th>Operador</th>
+              <th>Região / Bairros</th>
+              <th>Raio</th>
+              <th>Total Encontrados</th>
+              <th>Novos</th>
+              <th>Duplicados</th>
+              <th>HOT</th>
+              <th>WARM</th>
+            </tr>
+          </thead>
+          <tbody id="prospectingHistoryTableBody">
+            <!-- Preenchido via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EMITIR PEDIDO DE VENDA DIRETO E AGENDAR ENTREGA -->
+  <div id="modalDirectOrderFromLead" class="modal-admin-backdrop">
+    <div class="modal-admin-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
+        <h3 style="color:#fff; font-size:1.15rem; font-weight:900;"><i class="fa-solid fa-truck-ramp-box" style="color:#38BDF8;"></i> Emitir Pedido de Venda & Agendar Entrega de Barris</h3>
+        <button type="button" class="btn-admin-secondary" onclick="closeDirectOrderModal()" style="padding:0.3rem 0.6rem;">✕</button>
+      </div>
+
+      <form id="directOrderForm">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.85rem; margin-bottom:1rem;">
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Razão / Nome Fantasia *</label>
+            <input type="text" id="doCustomerName" required style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Responsável / Dono *</label>
+            <input type="text" id="doCustomerOwner" required style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Telefone / WhatsApp Comercial *</label>
+            <input type="text" id="doCustomerPhone" required style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Data Programada de Entrega *</label>
+            <input type="date" id="doDeliveryDate" required style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+          </div>
+          <div style="grid-column: 1/-1;">
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Endereço de Entrega & Descarregamento *</label>
+            <input type="text" id="doDeliveryAddress" required style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Janela de Entrega</label>
+            <select id="doDeliveryTime" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+              <option value="Manhã (09h às 12h)">Manhã (09h às 12h)</option>
+              <option value="Tarde (13h às 18h)" selected>Tarde (13h às 18h)</option>
+              <option value="Noite (18h às 21h)">Noite (18h às 21h)</option>
+              <option value="Urgente / Pronta Entrega">Urgente / Pronta Entrega</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Condição Financeira</label>
+            <select id="doPaymentMethod" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+              <option value="pix">PIX Instantâneo (QR Code EMV)</option>
+              <option value="credit_card">Cartão na Entrega</option>
+              <option value="cash">Dinheiro na Entrega</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- SELETOR DE BARRIS DE CHOPP -->
+        <label style="font-size:0.82rem; font-weight:800; color:#fff; display:block; margin-bottom:0.5rem;">Grade de Barris de Chopp:</label>
+        <div id="doProductsList" style="display:flex; flex-direction:column; gap:0.5rem; max-height:190px; overflow-y:auto; margin-bottom:1rem; padding-right:0.5rem;">
+          <!-- Preenchido via JS -->
+        </div>
+
+        <div style="margin-bottom:1rem;">
+          <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Instruções Logísticas / Observações</label>
+          <input type="text" id="doOrderNotes" placeholder="Ex: Barris pressurizados e gelados, doca de descarga lateral" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(2,132,199,0.1); border:1px solid rgba(2,132,199,0.3); padding:0.75rem 1.15rem; border-radius:var(--radius-sm); margin-bottom:1.15rem;">
+          <span style="font-weight:800; color:#fff;">Total do Pedido de Venda:</span>
+          <span id="doCalculatedTotal" style="font-size:1.2rem; font-weight:900; color:#38BDF8;">R$ 0,00</span>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:0.75rem;">
+          <button type="button" class="btn-admin-secondary" onclick="closeDirectOrderModal()">Cancelar</button>
+          <button type="submit" class="btn-admin-action">
+            <i class="fa-solid fa-file-circle-check"></i> Emitir Pedido de Venda
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 1: CADASTRAR / EDITAR PRODUTO (SUPER SIMPLES) -->
+  <!-- ========================================== -->
+  <div id="modalProduct" class="modal-admin-backdrop">
+    <div class="modal-admin-box" style="max-width: 500px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; border-bottom:1px solid var(--erp-border); padding-bottom:0.75rem;">
+        <h3 id="modalProductTitle" style="color:#fff; font-size:1.15rem; font-weight:900;"><i class="fa-solid fa-cube" style="color:#38BDF8;"></i> Cadastrar Produto</h3>
+        <button type="button" class="btn-admin-secondary" onclick="closeProductModal()" style="padding:0.3rem 0.6rem;">✕</button>
+      </div>
+
+      <form id="productForm">
+        <input type="hidden" id="editProductId">
+        
+        <div style="display:flex; flex-direction:column; gap:1rem; margin-bottom:1.25rem;">
+          <div>
+            <label style="font-size:0.8rem; font-weight:700; color:#fff; display:block; margin-bottom:0.35rem;">Descrição do Produto *</label>
+            <input type="text" id="prodDescription" required placeholder="Ex: Barril de Chopp Pilsen Puro Malte 50 Litros" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.65rem 0.85rem; border-radius:var(--radius-xs); color:#fff; font-size:0.88rem;">
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.85rem;">
+            <div>
+              <label style="font-size:0.8rem; font-weight:700; color:#fff; display:block; margin-bottom:0.35rem;">Preço Unitário (R$) *</label>
+              <input type="number" step="0.01" id="prodPrice" required placeholder="479.00" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.65rem 0.85rem; border-radius:var(--radius-xs); color:#38BDF8; font-weight:800; font-size:0.95rem;">
+            </div>
+            <div>
+              <label style="font-size:0.8rem; font-weight:700; color:#fff; display:block; margin-bottom:0.35rem;">Quantidade Disponível (Estoque) *</label>
+              <input type="number" id="prodStock" required placeholder="50" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.65rem 0.85rem; border-radius:var(--radius-xs); color:#22C55E; font-weight:800; font-size:0.95rem;">
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--erp-border); padding-top:1rem;">
+          <button type="button" id="btnDeleteProductInModal" class="btn-admin-secondary" style="color:#ef4444; border-color:rgba(239,68,68,0.3); display:none;" onclick="handleDeleteProductFromModal()">
+            <i class="fa-solid fa-trash"></i> Excluir Produto
+          </button>
+          <div style="display:flex; gap:0.75rem; margin-left:auto;">
+            <button type="button" class="btn-admin-secondary" onclick="closeProductModal()">Cancelar</button>
+            <button type="submit" class="btn-admin-action" style="padding:0.6rem 1.4rem; font-weight:900;">
+              <i class="fa-solid fa-floppy-disk"></i> Salvar Produto
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 2: CADASTRO RÁPIDO DE BAR / PDV COM AUTOPREENCHIMENTO -->
+  <!-- ========================================== -->
+  <div id="modalClient" class="modal-admin-backdrop">
+    <div class="modal-admin-box" style="max-width: 680px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--erp-border); padding-bottom:0.75rem;">
+        <div>
+          <h3 id="modalClientTitle" style="color:#fff; font-size:1.15rem; font-weight:900;"><i class="fa-solid fa-store" style="color:#38BDF8;"></i> Cadastrar Bar / Ponto de Venda</h3>
+          <p style="color:var(--text-secondary); font-size:0.78rem; margin-top:0.2rem;">Digite o nome do bar ou CNPJ para preencher tudo automaticamente.</p>
+        </div>
+        <button type="button" class="btn-admin-secondary" onclick="closeClientModal()" style="padding:0.3rem 0.6rem;">✕</button>
+      </div>
+
+      <!-- BARRA DE BUSCA INTELIGENTE POR CNPJ OU NOME -->
+      <div style="background:#0B1120; padding:0.85rem; border-radius:var(--radius-xs); border:1px solid var(--totvs-blue); margin-bottom:1rem;">
+        <label style="font-size:0.8rem; font-weight:800; color:#38BDF8; display:block; margin-bottom:0.4rem;">
+          <i class="fa-solid fa-bolt"></i> Autopreenchimento Rápido por Nome do Bar ou CNPJ:
+        </label>
+        <div style="display:flex; gap:0.5rem;">
+          <input type="text" id="clientLookupInput" placeholder="Ex: Choperia Jacques, Chopp Time ou CNPJ (ex: 27865757000102)..." style="flex:1; background:#020617; border:1px solid var(--erp-border-light); padding:0.6rem 0.85rem; border-radius:var(--radius-xs); color:#fff; font-size:0.85rem;">
+          <button type="button" id="btnTriggerClientLookup" class="btn-admin-action" style="white-space:nowrap; padding:0.6rem 1.1rem;">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Puxar Dados
+          </button>
+        </div>
+        <div id="clientLookupSuggestions" style="display:none; background:#020617; border:1px solid var(--erp-border-light); border-radius:var(--radius-xs); margin-top:0.5rem; max-height:160px; overflow-y:auto;">
+          <!-- Itens sugeridos preenchidos via JS -->
+        </div>
+      </div>
+
+      <form id="clientForm">
+        <input type="hidden" id="editClientId">
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.85rem; margin-bottom:1rem;">
+          <div style="grid-column: 1/-1;">
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Nome do Bar / Razão Social *</label>
+            <input type="text" id="clientName" required placeholder="Nome do Bar ou Restaurante" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff; font-weight:700;">
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Nome do Dono / Responsável *</label>
+            <input type="text" id="clientOwner" required placeholder="Nome do Responsável pelas compras" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Telefone / WhatsApp Comercial *</label>
+            <input type="text" id="clientPhone" required placeholder="(21) 9..." style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+          </div>
+          <div style="grid-column: 1/-1;">
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Endereço Completo de Entrega *</label>
+            <input type="text" id="clientAddress" required placeholder="Rua, número, complemento, bairro" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Bairro / Região</label>
+            <input type="text" id="clientNeighborhood" placeholder="Ex: Brás de Pina, Freguesia, Tijuca" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">CNPJ (Opcional)</label>
+            <input type="text" id="clientCnpj" placeholder="00.000.000/0000-00" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--erp-border); padding-top:1rem;">
+          <button type="button" class="btn-admin-secondary" onclick="closeClientModal()">Cancelar</button>
+          <div style="display:flex; gap:0.5rem;">
+            <button type="submit" class="btn-admin-action" style="background:#0284C7;">
+              <i class="fa-solid fa-floppy-disk"></i> Salvar Cadastro
+            </button>
+            <button type="button" id="btnSaveClientAndOrder" class="btn-admin-action" style="background:#22C55E;">
+              <i class="fa-solid fa-truck-fast"></i> Salvar & Fazer Pedido Já
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 3: FAZER PEDIDO AUTOMÁTICO & CONFIRMAÇÃO WHATSAPP -->
+  <!-- ========================================== -->
+  <div id="modalQuickClientOrder" class="modal-admin-backdrop">
+    <div class="modal-admin-box" style="max-width: 620px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--erp-border); padding-bottom:0.75rem;">
+        <div>
+          <h3 style="color:#fff; font-size:1.15rem; font-weight:900;"><i class="fa-solid fa-file-invoice-dollar" style="color:#38BDF8;"></i> Fazer Pedido de Chopp para o Bar</h3>
+          <p style="color:var(--text-secondary); font-size:0.78rem; margin-top:0.2rem;">Lança o pedido no ERP e envia a confirmação com preço e data direto no WhatsApp do cliente.</p>
+        </div>
+        <button type="button" class="btn-admin-secondary" onclick="closeQuickClientOrderModal()" style="padding:0.3rem 0.6rem;">✕</button>
+      </div>
+
+      <!-- CARD RESUMO DO CLIENTE -->
+      <div style="background:#0B1120; border:1px solid var(--erp-border-light); padding:0.85rem; border-radius:var(--radius-xs); margin-bottom:1rem; font-size:0.82rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.3rem;">
+          <strong id="qoClientName" style="color:#fff; font-size:0.95rem;">-</strong>
+          <span id="qoClientPhone" style="color:#22C55E; font-weight:800;"><i class="fa-brands fa-whatsapp"></i> -</span>
+        </div>
+        <div style="color:var(--text-secondary);">Responsável: <strong id="qoClientOwner" style="color:#fff;">-</strong></div>
+        <div style="color:var(--text-secondary);">Endereço de Entrega: <strong id="qoClientAddress" style="color:#fff;">-</strong></div>
+      </div>
+
+      <form id="quickClientOrderForm">
+        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:0.85rem; margin-bottom:1rem;">
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Selecione o Chopp / Produto *</label>
+            <select id="qoProductSelect" required style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.6rem 0.75rem; border-radius:var(--radius-xs); color:#fff; font-weight:700;">
+              <!-- Preenchido dinamicamente via JS -->
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Qtd de Barris *</label>
+            <input type="number" id="qoQuantity" value="5" min="1" required style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.6rem 0.75rem; border-radius:var(--radius-xs); color:#38BDF8; font-weight:900; font-size:1rem; text-align:center;">
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.85rem; margin-bottom:1rem;">
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Data de Entrega Prevista *</label>
+            <input type="date" id="qoDeliveryDate" required style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Forma de Pagamento</label>
+            <select id="qoPaymentMethod" style="width:100%; background:#0B1120; border:1px solid var(--erp-border-light); padding:0.55rem 0.75rem; border-radius:var(--radius-xs); color:#fff;">
+              <option value="PIX à Vista (Chave CNPJ / QR Code)">PIX à Vista (Desconto Especial)</option>
+              <option value="Boleto Faturado 7 Dias">Boleto Faturado 7 Dias</option>
+              <option value="Boleto Faturado 14 Dias">Boleto Faturado 14 Dias</option>
+              <option value="Cartão de Crédito / Débito na Entrega">Cartão na Entrega</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- RESUMO FINANCEIRO DO PEDIDO -->
+        <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3); padding:0.85rem 1.25rem; border-radius:var(--radius-sm); margin-bottom:1.25rem;">
+          <div>
+            <span style="font-size:0.8rem; color:var(--text-secondary); display:block;">Valor Total do Pedido:</span>
+            <strong id="qoTotalDisplay" style="font-size:1.3rem; font-weight:900; color:#22C55E;">R$ 0,00</strong>
+          </div>
+          <div style="font-size:0.78rem; color:var(--text-secondary); text-align:right;">
+            <span id="qoUnitSummary">0 barris selecionados</span>
+          </div>
+        </div>
+
+        <!-- BOTÕES DE AÇÃO -->
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--erp-border); padding-top:1rem;">
+          <button type="button" class="btn-admin-secondary" onclick="closeQuickClientOrderModal()">Fechar</button>
+          
+          <div style="display:flex; gap:0.6rem;">
+            <button type="submit" class="btn-admin-action" style="background:#0284C7;">
+              <i class="fa-solid fa-check"></i> 1. Gravar Pedido no ERP
+            </button>
+            <button type="button" id="btnSendWhatsAppOrderConfirmation" class="btn-admin-action" style="background:#22C55E; font-weight:900;">
+              <i class="fa-brands fa-whatsapp"></i> 2. Enviar Confirmação no WhatsApp
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <script src="js/admin.js"></script>
+  <script src="js/maps-hunter.js"></script>
+</body>
+</html>

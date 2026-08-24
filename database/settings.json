@@ -1,0 +1,13 @@
+{
+  "companyName": "PKCHOPP DISTRIBUIDORA DE CHOPP",
+  "pixKey": "pkchopp.financeiro@gmail.com",
+  "pixKeyType": "E-mail",
+  "pixBeneficiary": "PKCHOPP DISTRIBUIDORA LTDA",
+  "pixCity": "RIO DE JANEIRO",
+  "whatsappNumber": "5521999998888",
+  "deliveryFeeDefault": 0,
+  "minOrderValue": 200,
+  "address": "Av. Brasil, Rio de Janeiro - RJ",
+  "notificationSound": true,
+  "leadWelcomeMsg": "Olá {nome}! Tudo bem? Somos da Distribuidora PKCHOPP 🍻. Atendemos bares, restaurantes e eventos com Chopp Puro Malte direto da fábrica com preços especiais de atacado e entrega rápida no Rio e Grande Rio. Gostaria de receber nossa tabela de preços para o seu estabelecimento?"
+}

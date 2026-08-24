@@ -1,0 +1,52 @@
+{
+  "Bar e Restaurante Boca Cheia - Irajá": {
+    "status": "negociando",
+    "notes": "",
+    "updatedAt": "2026-08-24T13:04:29.667Z"
+  },
+  "Distribuidora & Depósito Central da Penha": {
+    "status": "sem_interesse",
+    "notes": "",
+    "updatedAt": "2026-08-24T12:24:44.041Z"
+  },
+  "Chopp Brahma Express - Av. Brasil / Penha": {
+    "status": "negociando",
+    "notes": "",
+    "updatedAt": "2026-08-24T12:33:58.304Z"
+  },
+  "Chopp Carioca Distribuidora - Madureira": {
+    "status": "negociando",
+    "notes": "",
+    "updatedAt": "2026-08-24T12:36:25.770Z"
+  },
+  "Império do Chopp - Duque de Caxias": {
+    "status": "negociando",
+    "notes": "",
+    "updatedAt": "2026-08-24T12:57:08.317Z"
+  },
+  "Bar Épico - Vista Alegre / Irajá": {
+    "status": "negociando",
+    "notes": "",
+    "updatedAt": "2026-08-24T13:02:09.031Z"
+  },
+  "Point do Espeto & Choperia - Méier": {
+    "status": "negociando",
+    "notes": "",
+    "updatedAt": "2026-08-24T13:03:58.923Z"
+  },
+  "Choperia Jacques - Brás de Pina": {
+    "status": "negociando",
+    "notes": "",
+    "updatedAt": "2026-08-24T13:04:12.432Z"
+  },
+  "Fast Chopp - Recreio dos Bandeirantes": {
+    "status": "negociando",
+    "notes": "",
+    "updatedAt": "2026-08-24T13:18:48.545Z"
+  },
+  "Ilha do Chopp - Praia da Bica / Ilha do Governador": {
+    "status": "cliente",
+    "notes": "Pedido PK-815373 realizado. Total: R$ 2034.00",
+    "updatedAt": "2026-08-24T15:24:48.148Z"
+  }
+}

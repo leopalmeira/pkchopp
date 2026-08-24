@@ -1,0 +1,170 @@
+[
+  {
+    "id": "prod-pilsen-50",
+    "name": "Barril de Chopp Pilsen Puro Malte 50 Litros",
+    "category": "chopp",
+    "description": "Chopp Puro Malte dourado, colarinho cremoso e refrescante. O mais vendido para abastecimento de bares e depósitos de alto giro.",
+    "liters": 50,
+    "unit": "Barril 50L (Rende ~165 copos de 300ml)",
+    "price": 499,
+    "promotionalPrice": 479,
+    "valveType": "Padrão S (Micromatic)",
+    "alcoholContent": "4.8% ABV",
+    "ibu": "12 IBU",
+    "image": "https://images.unsplash.com/photo-1538488881522-4326c36763ce?auto=format&fit=crop&w=600&q=80",
+    "active": true,
+    "featured": true,
+    "tags": [
+      "Líder de Vendas",
+      "50 Litros",
+      "Puro Malte",
+      "Alto Giro"
+    ]
+  },
+  {
+    "id": "prod-pilsen-30",
+    "name": "Barril de Chopp Pilsen Puro Malte 30 Litros",
+    "category": "chopp",
+    "description": "Chopp Puro Malte em barril de 30 litros para reposição rápida e estabelecimentos de médio giro.",
+    "liters": 30,
+    "unit": "Barril 30L (Rende ~100 copos de 300ml)",
+    "price": 339,
+    "promotionalPrice": 319,
+    "valveType": "Padrão S (Micromatic)",
+    "alcoholContent": "4.8% ABV",
+    "ibu": "12 IBU",
+    "image": "https://images.unsplash.com/photo-1608270199047-b5baea143a5c?auto=format&fit=crop&w=600&q=80",
+    "active": true,
+    "featured": true,
+    "tags": [
+      "Puro Malte",
+      "30 Litros",
+      "Pronta Entrega"
+    ]
+  },
+  {
+    "id": "prod-vinho-50",
+    "name": "Barril de Chopp de Vinho Tinto 50 Litros",
+    "category": "chopp",
+    "description": "Blend suave de chopp puro malte com vinho tinto de mesa. Excelente aceitação e altíssima margem de lucro por copo.",
+    "liters": 50,
+    "unit": "Barril 50L (Rende ~165 copos de 300ml)",
+    "price": 580,
+    "promotionalPrice": 549,
+    "valveType": "Padrão S (Micromatic)",
+    "alcoholContent": "5.5% ABV",
+    "ibu": "10 IBU",
+    "image": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80",
+    "active": true,
+    "featured": false,
+    "tags": [
+      "Chopp de Vinho",
+      "Alta Margem",
+      "50L"
+    ]
+  },
+  {
+    "id": "prod-vinho-30",
+    "name": "Barril de Chopp de Vinho Tinto 30 Litros",
+    "category": "chopp",
+    "description": "Versão de 30 Litros de Chopp de Vinho Tinto suave e refrescante para atender demanda de fim de semana.",
+    "liters": 30,
+    "unit": "Barril 30L (Rende ~100 copos de 300ml)",
+    "price": 380,
+    "promotionalPrice": 359,
+    "valveType": "Padrão S (Micromatic)",
+    "alcoholContent": "5.5% ABV",
+    "ibu": "10 IBU",
+    "image": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80",
+    "active": true,
+    "featured": false,
+    "tags": [
+      "Chopp de Vinho",
+      "30L"
+    ]
+  },
+  {
+    "id": "prod-ipa-50",
+    "name": "Barril de Chopp IPA Artesanal 50 Litros",
+    "category": "chopp",
+    "description": "India Pale Ale com lúpulos nobres americanos (Dry Hopping). Amargor marcante e aroma cítrico e floral.",
+    "liters": 50,
+    "unit": "Barril 50L (Rende ~165 copos de 300ml)",
+    "price": 650,
+    "promotionalPrice": 620,
+    "valveType": "Padrão S (Micromatic)",
+    "alcoholContent": "6.2% ABV",
+    "ibu": "45 IBU",
+    "image": "https://images.unsplash.com/photo-1566633806327-68e152aaf26d?auto=format&fit=crop&w=600&q=80",
+    "active": true,
+    "featured": false,
+    "tags": [
+      "IPA",
+      "Artesanal",
+      "50 Litros"
+    ]
+  },
+  {
+    "id": "prod-ipa-30",
+    "name": "Barril de Chopp IPA Artesanal 30 Litros",
+    "category": "chopp",
+    "description": "Chopp IPA lupulado e aromático em barril de 30 litros para pubs e bares com torneiras artesanais.",
+    "liters": 30,
+    "unit": "Barril 30L (Rende ~100 copos de 300ml)",
+    "price": 420,
+    "promotionalPrice": 399,
+    "valveType": "Padrão S (Micromatic)",
+    "alcoholContent": "6.2% ABV",
+    "ibu": "45 IBU",
+    "image": "https://images.unsplash.com/photo-1566633806327-68e152aaf26d?auto=format&fit=crop&w=600&q=80",
+    "active": true,
+    "featured": false,
+    "tags": [
+      "IPA",
+      "30 Litros",
+      "Premium"
+    ]
+  },
+  {
+    "id": "prod-black-30",
+    "name": "Barril de Chopp Black / Stout 30 Litros",
+    "category": "chopp",
+    "description": "Chopp escuro encorpado com maltes torrados especiais, notas de café e chocolate com espuma densa.",
+    "liters": 30,
+    "unit": "Barril 30L (Rende ~100 copos de 300ml)",
+    "price": 399,
+    "promotionalPrice": null,
+    "valveType": "Padrão S (Micromatic)",
+    "alcoholContent": "5.0% ABV",
+    "ibu": "20 IBU",
+    "image": "https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=600&q=80",
+    "active": true,
+    "featured": false,
+    "tags": [
+      "Chopp Escuro",
+      "Notas de Café",
+      "30L"
+    ]
+  },
+  {
+    "id": "prod-trigo-30",
+    "name": "Barril de Chopp de Trigo (Weiss) 30 Litros",
+    "category": "chopp",
+    "description": "Cerveja de trigo não filtrada estilo alemão, turva, com aromas naturais de cravo e banana.",
+    "liters": 30,
+    "unit": "Barril 30L (Rende ~100 copos de 300ml)",
+    "price": 390,
+    "promotionalPrice": null,
+    "valveType": "Padrão S (Micromatic)",
+    "alcoholContent": "5.2% ABV",
+    "ibu": "14 IBU",
+    "image": "https://images.unsplash.com/photo-1571613316887-6f8d5cbf7ef7?auto=format&fit=crop&w=600&q=80",
+    "active": true,
+    "featured": false,
+    "tags": [
+      "Weiss",
+      "Trigo",
+      "30L"
+    ]
+  }
+]
