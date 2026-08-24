@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#070B14">
-  <title>PKCHOPP | Pedidos de Barril de Chopp 50L no Rio de Janeiro</title>
+  <title>PKCHOPP | Pedido de Barril de Chopp 50L no Rio de Janeiro</title>
   
   <!-- Fontes Google & FontAwesome -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,24 +16,7 @@
 </head>
 <body>
 
-  <!-- Barra Superior de Atendimento (Ocultada em telas pequenas) -->
-  <div class="top-notice-bar">
-    <div class="notice-container">
-      <div>
-        <span class="notice-tag"><i class="fa-solid fa-truck-fast"></i> Distribuidora</span>
-        <span>Fornecimento e reposição expressa de barris 50L para Bares, Restaurantes e Eventos no RJ.</span>
-      </div>
-      <div>
-        <a href="https://wa.me/5521999998888" target="_blank" class="top-wa-link">
-          <i class="fa-brands fa-whatsapp fa-lg"></i> Central WhatsApp: (21) 99999-8888
-        </a>
-        <span style="margin: 0 0.4rem; opacity: 0.3;">|</span>
-        <span><i class="fa-brands fa-pix" style="color:#10B981;"></i> PIX ou Cartão</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Cabeçalho Mobile-First (Sticky Glass) -->
+  <!-- Cabeçalho Principal (Sticky Glass) -->
   <header>
     <div class="header-container">
       <a href="/" class="brand-wrapper">
@@ -42,174 +25,43 @@
         </div>
         <div class="brand-text">
           <h1>PK<span>CHOPP</span></h1>
-          <p>Distribuidora de Barris 50L</p>
+          <p>Distribuidora de Chopp RJ</p>
         </div>
       </a>
 
       <div class="header-actions">
-        <div class="status-pill-header" title="Entregas abertas no Rio de Janeiro">
+        <div class="city-badge">
           <span class="pulse-dot"></span>
           <span>Entregas no RJ</span>
         </div>
 
-        <button id="openCartBtn" class="btn-cart-header" aria-label="Abrir Pedido">
+        <button id="openCartBtn" class="btn-header-cart" aria-label="Abrir Carrinho">
           <i class="fa-solid fa-cart-shopping"></i>
-          <span>Pedido</span>
-          <span id="cartCountBadge" class="cart-badge-count">0</span>
+          <span>Carrinho</span>
+          <span id="cartCountBadge" class="cart-count-badge">0</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Banner Principal Mobile & Desktop -->
-  <section class="hero-section">
-    <div class="hero-banner-card">
-      <div class="hero-badge-pill">
-        <i class="fa-solid fa-bolt"></i> Pedido Rápido • Sem Burocracia
-      </div>
-      <h2 class="hero-title">
-        Distribuição de <span>Barril de Chopp 50L</span> no Rio de Janeiro
-      </h2>
-      <p class="hero-subtitle">
-        Abastecimento contínuo e reposição expressa de barris de Chopp 50L para Bares, Restaurantes, Choperias, Depósitos e Eventos.
-      </p>
-
-      <div class="hero-perks-grid">
-        <div class="perk-chip">
-          <div class="perk-icon-wrap">
-            <i class="fa-solid fa-truck-fast"></i>
-          </div>
-          <div>
-            <strong>Entrega Programada</strong>
-            <span>Manhã, tarde, noite ou urgente</span>
-          </div>
-        </div>
-
-        <div class="perk-chip">
-          <div class="perk-icon-wrap">
-            <i class="fa-solid fa-shield-halved"></i>
-          </div>
-          <div>
-            <strong>Pressurizado & Lacrado</strong>
-            <span>Válvula Padrão S Micromatic</span>
-          </div>
-        </div>
-
-        <div class="perk-chip">
-          <div class="perk-icon-wrap">
-            <i class="fa-solid fa-qrcode"></i>
-          </div>
-          <div>
-            <strong>PIX ou Cartão</strong>
-            <span>QR Code na tela ou maquininha</span>
-          </div>
-        </div>
-
-        <div class="perk-chip">
-          <div class="perk-icon-wrap">
-            <i class="fa-solid fa-star"></i>
-          </div>
-          <div>
-            <strong>Garantia de Qualidade</strong>
-            <span>Chopp fresco e colarinho cremoso</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Passo a Passo: Como Funciona -->
-  <section class="how-it-works-section">
-    <div class="steps-bar">
-      <div class="step-item">
-        <div class="step-badge">1</div>
-        <div class="step-text">
-          <h4>Escolha a Quantidade</h4>
-          <p>Defina quantos barris de 50L você precisa.</p>
-        </div>
-      </div>
-
-      <div class="step-item">
-        <div class="step-badge">2</div>
-        <div class="step-text">
-          <h4>Informe o Endereço</h4>
-          <p>Digite os dados do seu bar ou evento e o horário.</p>
-        </div>
-      </div>
-
-      <div class="step-item">
-        <div class="step-badge">3</div>
-        <div class="step-text">
-          <h4>Receba no Local</h4>
-          <p>Pague no PIX ou na entrega e receba pronto para uso.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Barra de Filtros & Busca -->
-  <section class="filter-bar-section">
-    <div class="filter-pills">
-      <button class="filter-btn active" data-category="all">
-        <i class="fa-solid fa-beer-mug-empty"></i> Todos
-      </button>
-      <button class="filter-btn" data-category="50l">
-        <i class="fa-solid fa-boxes-stacked"></i> Barris 50L
-      </button>
-    </div>
-
-    <div class="search-input-wrap">
-      <i class="fa-solid fa-magnifying-glass search-icon-inside"></i>
-      <input type="text" id="storeSearchInput" placeholder="Buscar barril...">
-    </div>
-  </section>
-
-  <!-- Catálogo de Produtos (Grade Responsiva) -->
-  <main class="products-section">
-    <div id="productsGrid" class="products-grid">
-      <div style="text-align:center; grid-column: 1/-1; padding: 3rem 1rem;">
+  <!-- Conteúdo Central: Card do Produto & Escolha de Quantidade -->
+  <main class="main-store-container">
+    <div id="productsGrid">
+      <div style="text-align:center; padding: 4rem 1rem;">
         <i class="fa-solid fa-circle-notch fa-spin fa-2x" style="color: var(--gold-primary);"></i>
-        <p style="margin-top: 0.85rem; color: var(--text-muted); font-size: 0.85rem;">Carregando barris PKCHOPP...</p>
+        <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">Carregando barril PKCHOPP...</p>
       </div>
     </div>
   </main>
 
-  <!-- FAQ / Dúvidas Frequentes -->
-  <section class="faq-section">
-    <h3 class="faq-title">Dúvidas Frequentes</h3>
-    <p class="faq-subtitle">Tudo sobre fornecimento e reposição de barris</p>
-
-    <div class="faq-grid">
-      <div class="faq-card">
-        <h4><i class="fa-solid fa-truck"></i> Qual o prazo de entrega?</h4>
-        <p>Realizamos entregas por turno (manhã, tarde ou noite) ou atendimento urgente para reposição no mesmo dia em todo o RJ.</p>
-      </div>
-
-      <div class="faq-card">
-        <h4><i class="fa-solid fa-circle-check"></i> Como o barril é entregue?</h4>
-        <p>Nossos barris de 50L são entregues lacrados e pressurizados com válvula Tipo S, prontos para engate na chopeira ou serpentina.</p>
-      </div>
-
-      <div class="faq-card">
-        <h4><i class="fa-solid fa-link"></i> Qual o padrão da válvula?</h4>
-        <p>Trabalhamos com o padrão Micromatic Tipo S (padrão universal mais utilizado no Brasil).</p>
-      </div>
-
-      <div class="faq-card">
-        <h4><i class="fa-brands fa-pix"></i> Quais as formas de pagamento?</h4>
-        <p>PIX instantâneo via QR Code na tela, cartão de crédito/débito na entrega ou dinheiro com troco.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Barra Flutuante Mobile de Pedido (Sticky Bottom Bar) -->
+  <!-- Barra Flutuante Mobile (Sticky Bottom Bar) -->
   <div id="mobileFloatingBar" class="mobile-floating-bar">
     <div class="floating-info">
       <span id="floatingCountText" class="floating-count">1 barril no pedido</span>
-      <span id="floatingTotalText" class="floating-total">R$ 0,00</span>
+      <span id="floatingTotalText" class="floating-total">R$ 479,00</span>
     </div>
     <button id="btnOpenCartFloating" class="floating-btn-action">
-      <span>Ver Pedido</span>
+      <span>Ver Carrinho</span>
       <i class="fa-solid fa-arrow-right"></i>
     </button>
   </div>
@@ -218,7 +70,7 @@
   <div id="cartOverlay" class="cart-drawer-overlay"></div>
   <aside id="cartDrawer" class="cart-drawer">
     <div class="drawer-header">
-      <h3><i class="fa-solid fa-beer-mug-empty" style="color: var(--gold-primary);"></i> Meu Pedido de Barris</h3>
+      <h3><i class="fa-solid fa-beer-mug-empty" style="color: var(--gold-primary);"></i> Meu Carrinho</h3>
       <button id="closeCartBtn" class="btn-close-drawer" title="Fechar">
         <i class="fa-solid fa-xmark"></i>
       </button>
@@ -230,20 +82,20 @@
 
     <div id="cartDrawerFooter" class="drawer-footer" style="display: none;">
       <div class="drawer-total-row">
-        <span>Subtotal</span>
+        <span>Subtotal dos Barris</span>
         <span id="cartSubtotalValue">R$ 0,00</span>
       </div>
       <div class="drawer-total-row">
         <span>Taxa de Entrega</span>
-        <span id="cartDeliveryFee">Grátis / A combinar</span>
+        <span id="cartDeliveryFee">A combinar / Grátis</span>
       </div>
       <div class="drawer-total-row grand-total">
-        <span>Total a Pagar</span>
+        <span>Total</span>
         <span id="cartTotalValue">R$ 0,00</span>
       </div>
 
       <button id="btnOpenCheckoutModal" class="btn-proceed-checkout">
-        <span>Continuar para Entrega</span>
+        <span>Finalizar Pedido</span>
         <i class="fa-solid fa-arrow-right"></i>
       </button>
     </div>
@@ -253,7 +105,7 @@
   <div id="checkoutModal" class="modal-backdrop">
     <div class="modal-card">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-truck-ramp-box" style="color: var(--gold-primary);"></i> Finalizar Pedido de Barris</h3>
+        <h3><i class="fa-solid fa-truck-ramp-box" style="color: var(--gold-primary);"></i> Dados de Entrega</h3>
         <button id="closeCheckoutBtn" class="btn-close-drawer" title="Fechar">
           <i class="fa-solid fa-xmark"></i>
         </button>
@@ -267,7 +119,7 @@
           </div>
 
           <div class="form-group">
-            <label for="customerOwner">Nome do Responsável / Dono *</label>
+            <label for="customerOwner">Nome do Responsável *</label>
             <input type="text" id="customerOwner" required placeholder="Ex: Carlos Eduardo">
           </div>
 
@@ -302,21 +154,21 @@
           </div>
         </div>
 
-        <div style="margin-bottom: 0.75rem;">
-          <label style="font-weight: 800; font-size: 0.85rem; color: #fff; display: block; margin-bottom: 0.4rem;">
+        <div style="margin-bottom: 0.85rem;">
+          <label style="font-weight: 800; font-size: 0.85rem; color: #fff; display: block; margin-bottom: 0.45rem;">
             Forma de Pagamento:
           </label>
           <div class="payment-selector">
             <div class="pay-option selected" data-method="pix">
-              <i class="fa-brands fa-pix" style="color: #10b981; font-size: 1.15rem;"></i>
-              <span>PIX na Tela</span>
+              <i class="fa-brands fa-pix" style="color: #10b981; font-size: 1.25rem;"></i>
+              <span>PIX Instantâneo</span>
             </div>
             <div class="pay-option" data-method="credit_card">
-              <i class="fa-solid fa-credit-card" style="color: #38BDF8; font-size: 1.15rem;"></i>
+              <i class="fa-solid fa-credit-card" style="color: #38BDF8; font-size: 1.25rem;"></i>
               <span>Cartão na Entrega</span>
             </div>
             <div class="pay-option" data-method="cash">
-              <i class="fa-solid fa-money-bill-wave" style="color: var(--gold-primary); font-size: 1.15rem;"></i>
+              <i class="fa-solid fa-money-bill-wave" style="color: var(--gold-primary); font-size: 1.25rem;"></i>
               <span>Dinheiro</span>
             </div>
           </div>
@@ -328,12 +180,12 @@
         </div>
 
         <div class="drawer-total-row grand-total" style="margin-bottom: 1.25rem;">
-          <span>Valor Total:</span>
+          <span>Total do Pedido:</span>
           <span id="checkoutFinalTotal">R$ 0,00</span>
         </div>
 
         <button type="submit" id="btnSubmitOrder" class="btn-proceed-checkout">
-          <i class="fa-solid fa-circle-check"></i> Confirmar e Enviar Pedido
+          <i class="fa-solid fa-circle-check"></i> Confirmar Pedido
         </button>
       </form>
     </div>
@@ -343,20 +195,20 @@
   <div id="successModal" class="modal-backdrop">
     <div class="modal-card" style="max-width: 520px;">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-circle-check" style="color: var(--emerald-green);"></i> Pedido Confirmado!</h3>
+        <h3><i class="fa-solid fa-circle-check" style="color: var(--emerald);"></i> Pedido Confirmado!</h3>
         <button id="closeSuccessBtn" class="btn-close-drawer" title="Fechar">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
       <div id="pixPaymentArea" style="display: none;">
-        <p style="text-align:center; color: var(--text-muted); font-size: 0.82rem;">
-          Escaneie o QR Code abaixo com seu banco para pagamento instantâneo via PIX:
+        <p style="text-align:center; color: var(--text-muted); font-size: 0.85rem;">
+          Escaneie o QR Code abaixo para pagamento imediato via PIX:
         </p>
 
         <div class="pix-presentation">
           <img id="pixQrCodeImg" class="pix-qr-img" src="" alt="QR Code Pix">
-          <div style="font-weight: 900; font-size: 1.35rem; color: #0F172A; margin-bottom: 0.4rem;" id="pixModalAmount">
+          <div style="font-weight: 900; font-size: 1.4rem; color: #0F172A; margin-bottom: 0.4rem;" id="pixModalAmount">
             R$ 0,00
           </div>
           <div class="pix-copia-cola-box" id="pixPayloadText">
@@ -370,64 +222,56 @@
 
       <div id="orderSuccessSummary" style="background: var(--bg-card); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.25rem; border: 1px solid var(--border-glass);">
         <div style="display:flex; justify-content:space-between; margin-bottom: 0.4rem;">
-          <span style="color: var(--text-muted); font-size:0.8rem;">Nº do Pedido:</span>
-          <strong id="successOrderNumber" style="color: var(--gold-primary); font-size: 1rem;">PK-000000</strong>
+          <span style="color: var(--text-muted); font-size:0.82rem;">Nº do Pedido:</span>
+          <strong id="successOrderNumber" style="color: var(--gold-primary); font-size: 1.05rem;">PK-000000</strong>
         </div>
         <div style="display:flex; justify-content:space-between; margin-bottom: 0.4rem;">
-          <span style="color: var(--text-muted); font-size:0.8rem;">Estabelecimento:</span>
-          <span id="successCustomerName" style="font-weight:700; color:#fff; font-size:0.85rem;">--</span>
+          <span style="color: var(--text-muted); font-size:0.82rem;">Estabelecimento:</span>
+          <span id="successCustomerName" style="font-weight:700; color:#fff; font-size:0.88rem;">--</span>
         </div>
         <div style="display:flex; justify-content:space-between; margin-bottom: 0.4rem;">
-          <span style="color: var(--text-muted); font-size:0.8rem;">Responsável:</span>
-          <span id="successCustomerOwner" style="color:#fff; font-size:0.85rem;">--</span>
+          <span style="color: var(--text-muted); font-size:0.82rem;">Responsável:</span>
+          <span id="successCustomerOwner" style="color:#fff; font-size:0.88rem;">--</span>
         </div>
         <div style="display:flex; justify-content:space-between; margin-bottom: 0.4rem;">
-          <span style="color: var(--text-muted); font-size:0.8rem;">Endereço de Entrega:</span>
-          <span id="successDeliveryAddress" style="color:var(--text-light); text-align:right; max-width:240px; font-size:0.8rem;">--</span>
+          <span style="color: var(--text-muted); font-size:0.82rem;">Endereço de Entrega:</span>
+          <span id="successDeliveryAddress" style="color:var(--text-light); text-align:right; max-width:240px; font-size:0.82rem;">--</span>
         </div>
         <div style="display:flex; justify-content:space-between; margin-bottom: 0.4rem;">
-          <span style="color: var(--text-muted); font-size:0.8rem;">Status Pagamento:</span>
-          <span id="successPaymentStatus" style="color: var(--gold-primary); font-weight:700; font-size:0.85rem;">--</span>
+          <span style="color: var(--text-muted); font-size:0.82rem;">Status Pagamento:</span>
+          <span id="successPaymentStatus" style="color: var(--gold-primary); font-weight:700; font-size:0.88rem;">--</span>
         </div>
         <div style="display:flex; justify-content:space-between;">
-          <span style="color: var(--text-muted); font-size:0.8rem;">Previsão de Entrega:</span>
-          <span id="successDeliveryDate" style="color:#fff; font-size:0.85rem;">--</span>
+          <span style="color: var(--text-muted); font-size:0.82rem;">Previsão de Entrega:</span>
+          <span id="successDeliveryDate" style="color:#fff; font-size:0.88rem;">--</span>
         </div>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 0.65rem;">
         <a id="btnWhatsAppNotify" href="#" target="_blank" class="btn-proceed-checkout" style="background: var(--wa-green); color: #fff; text-decoration: none;">
-          <i class="fa-brands fa-whatsapp fa-lg"></i> Enviar Comprovante no WhatsApp
+          <i class="fa-brands fa-whatsapp fa-lg"></i> Enviar no WhatsApp da PKCHOPP
         </a>
         <button id="btnFinishOrder" style="background: #1E293B; color: #fff; border: 1px solid var(--border-glass); padding: 0.75rem; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.85rem; cursor: pointer;">
-          Concluir e Fazer Novo Pedido
+          Concluir Pedido
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Rodapé Institucional -->
+  <!-- Rodapé Limpo & Direto -->
   <footer>
     <div class="footer-container">
       <div class="footer-brand">
         <h4>PK<span>CHOPP</span> DISTRIBUIDORA</h4>
-        <p style="color: var(--text-muted); font-size: 0.82rem; max-width: 400px; line-height: 1.5;">
-          Fornecimento contínuo e reposição expressa de barris de Chopp 50L para Bares, Restaurantes e Eventos em todo o Rio de Janeiro.
+        <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 0.25rem;">
+          Fornecimento e reposição expressa de barris 50L para Bares, Restaurantes e Eventos no Rio de Janeiro.
         </p>
       </div>
       <div>
-        <h5 style="color: #fff; margin-bottom: 0.5rem; font-weight: 800; font-size: 0.88rem;">Atendimento Comercial</h5>
-        <p style="color: var(--text-light); font-size: 0.82rem;"><i class="fa-brands fa-whatsapp" style="color: var(--wa-green);"></i> (21) 99999-8888</p>
-        <p style="color: var(--text-light); font-size: 0.82rem; margin-top: 0.3rem;"><i class="fa-regular fa-envelope" style="color: var(--gold-primary);"></i> pedidos@pkchopp.com.br</p>
+        <a href="https://wa.me/5521999998888" target="_blank" style="color: var(--wa-green); text-decoration:none; font-weight:700; font-size:0.88rem;">
+          <i class="fa-brands fa-whatsapp"></i> Central WhatsApp: (21) 99999-8888
+        </a>
       </div>
-      <div>
-        <h5 style="color: #fff; margin-bottom: 0.5rem; font-weight: 800; font-size: 0.88rem;">Horários de Entrega</h5>
-        <p style="color: var(--text-light); font-size: 0.82rem;"><i class="fa-regular fa-clock" style="color: var(--gold-primary);"></i> Segunda a Domingo: 08h às 22h</p>
-        <p style="color: var(--text-dim); font-size: 0.75rem; margin-top: 0.3rem;">Plantão de Reposição nos Fins de Semana</p>
-      </div>
-    </div>
-    <div class="footer-copy">
-      © 2026 PKCHOPP - Distribuidora de Chopp no Atacado e Varejo. Todos os direitos reservados.
     </div>
   </footer>
 

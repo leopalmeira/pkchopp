@@ -190,45 +190,59 @@ function renderProducts(searchTerm = '') {
   productsGrid.innerHTML = filtered.map(prod => {
     const price = prod.promotionalPrice !== null && prod.promotionalPrice !== undefined ? prod.promotionalPrice : prod.price;
     const hasDiscount = prod.promotionalPrice && prod.promotionalPrice < prod.price;
-    
-    const litersBadge = prod.liters > 0 ? `<span class="tag-chip liters"><i class="fa-solid fa-beer-mug-empty"></i> ${prod.liters} Litros</span>` : '<span class="tag-chip liters"><i class="fa-solid fa-beer-mug-empty"></i> 50 Litros</span>';
+    const litersVal = prod.liters || 50;
 
     return `
-      <div class="product-card">
-        <div class="card-img-box">
-          <span class="badge-tag-card"><i class="fa-solid fa-truck-fast"></i> Pronta Entrega RJ</span>
+      <div class="product-showcase-card">
+        <div class="product-gallery-side">
+          <span class="badge-top-left"><i class="fa-solid fa-truck-fast"></i> Pronta Entrega RJ</span>
           <img src="${prod.image || '/images/barril-brahma.jpg'}" alt="${prod.name}" loading="lazy" onerror="this.src='/images/barril-brahma.jpg'">
         </div>
-        <div class="card-body">
-          <div class="card-tags">
-            ${litersBadge}
-            <span class="tag-chip"><i class="fa-solid fa-bolt"></i> Válvula S</span>
-            ${(prod.tags || []).filter(t => !t.includes('Litros')).map(tag => `<span class="tag-chip">${tag}</span>`).join('')}
-          </div>
-          
-          <h3 class="card-title">${prod.name}</h3>
-          <p class="card-desc">${prod.description || ''}</p>
-          
-          <div class="card-price-row">
-            <div>
-              <div class="price-label">Preço Unitário</div>
-              <div class="price-number">R$ ${price.toFixed(2).replace('.', ',')}</div>
+
+        <div class="product-info-side">
+          <div>
+            <div class="product-specs-chips">
+              <span class="spec-chip liters"><i class="fa-solid fa-beer-mug-empty"></i> ${litersVal} Litros</span>
+              <span class="spec-chip"><i class="fa-solid fa-shield-halved"></i> Válvula Tipo S</span>
+              <span class="spec-chip"><i class="fa-solid fa-circle-check"></i> Inox Pressurizado</span>
+              ${(prod.tags || []).filter(t => !t.includes('Litros') && !t.includes('Pronta Entrega')).map(tag => `<span class="spec-chip">${tag}</span>`).join('')}
             </div>
-            <div style="text-align:right;">
-              <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">${prod.unit || 'Barril 50L'}</span>
-              ${hasDiscount ? `<div style="font-size:0.75rem; color:var(--text-dim); text-decoration:line-through;">R$ ${prod.price.toFixed(2).replace('.', ',')}</div>` : ''}
-            </div>
+
+            <h2 class="product-title">${prod.name}</h2>
+            <p class="product-description-text">${prod.description || 'Barril de Chopp de alta qualidade, devidamente pressurizado e lacrado com válvula padrão universal Tipo S para abastecimento do seu estabelecimento.'}</p>
           </div>
 
-          <div class="card-action-bar">
-            <div class="stepper-control">
-              <button type="button" class="stepper-btn" onclick="changeCardQty('${prod.id}', -1)">-</button>
-              <input type="text" id="qty-${prod.id}" class="stepper-input" value="1" readonly>
-              <button type="button" class="stepper-btn" onclick="changeCardQty('${prod.id}', 1)">+</button>
+          <div>
+            <div class="price-showcase-box">
+              <div class="price-meta">
+                <span>Preço por Barril</span>
+                <strong>R$ ${price.toFixed(2).replace('.', ',')}</strong>
+              </div>
+              <div class="price-sub-info">
+                <span><i class="fa-brands fa-pix"></i> PIX na Tela ou Cartão</span>
+                <small>Pagamento Seguro na Entrega</small>
+              </div>
             </div>
-            <button class="btn-add-keg" onclick="addToCart('${prod.id}')">
-              <i class="fa-solid fa-cart-plus"></i> Pedir Barril
-            </button>
+
+            <div class="purchase-controls-row">
+              <div class="qty-selection-group">
+                <span class="qty-label-text">Quantidade:</span>
+                <div class="qty-stepper-touch">
+                  <button type="button" class="qty-btn-touch" onclick="changeCardQty('${prod.id}', -1)">-</button>
+                  <input type="text" id="qty-${prod.id}" class="qty-number-input" value="1" readonly>
+                  <button type="button" class="qty-btn-touch" onclick="changeCardQty('${prod.id}', 1)">+</button>
+                </div>
+              </div>
+
+              <div class="action-buttons-group">
+                <button type="button" class="btn-buy-now" onclick="buyNow('${prod.id}')">
+                  <i class="fa-solid fa-bolt"></i> Comprar Agora
+                </button>
+                <button type="button" class="btn-add-cart-secondary" onclick="addToCart('${prod.id}')">
+                  <i class="fa-solid fa-cart-plus"></i> Adicionar ao Carrinho
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -247,7 +261,7 @@ window.changeCardQty = function(prodId, delta) {
 };
 
 // Adicionar ao Carrinho
-window.addToCart = function(prodId) {
+window.addToCart = function(prodId, shouldOpenDrawer = true) {
   const product = productsState.find(p => p.id === prodId);
   if (!product) return;
 
@@ -264,7 +278,7 @@ window.addToCart = function(prodId) {
       name: product.name,
       category: product.category,
       unit: product.unit,
-      liters: product.liters || 0,
+      liters: product.liters || 50,
       price: finalPrice,
       image: product.image,
       quantity: quantity
@@ -273,9 +287,15 @@ window.addToCart = function(prodId) {
 
   saveCart();
   updateCartUI();
-  openCart();
+  if (shouldOpenDrawer) openCart();
 
   if (qtyInput) qtyInput.value = 1;
+};
+
+// Compra Direta (Comprar Agora)
+window.buyNow = function(prodId) {
+  addToCart(prodId, false);
+  openCheckout();
 };
 
 function saveCart() {
