@@ -127,11 +127,13 @@ header {
 }
 
 .brand-text p {
-  font-size: 0.62rem;
-  color: var(--text-muted);
-  font-weight: 600;
-  letter-spacing: 0.3px;
+  font-size: 0.65rem;
+  color: var(--gold-primary);
+  font-weight: 800;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
+  display: block !important;
+  margin-top: 1px;
 }
 
 .header-actions {
@@ -1038,11 +1040,29 @@ footer {
 
 @media (max-width: 480px) {
   header {
-    padding: 0.55rem 0.75rem;
+    padding: 0.5rem 0.65rem;
+  }
+
+  .brand-icon-box {
+    width: 36px;
+    height: 36px;
+    font-size: 1.05rem;
+    display: flex !important;
+    flex-shrink: 0;
+  }
+
+  .brand-text h1 {
+    font-size: 1.05rem;
+    line-height: 1;
   }
 
   .brand-text p {
-    display: none;
+    display: block !important;
+    font-size: 0.56rem;
+    font-weight: 800;
+    color: var(--gold-primary);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
   }
 
   .city-badge span:last-child {
